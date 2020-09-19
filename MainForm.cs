@@ -58,7 +58,7 @@ namespace WeatherCS
                 ReloadPage.Visible = false;
                 ErrorLabel.Visible = false;
 
-                await Task.Delay(3600);
+                await Task.Delay(60000);
                 GetWeather();
             }
         }
