@@ -35,18 +35,19 @@
             this.WeatherIco = new System.Windows.Forms.PictureBox();
             this.Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.MenuTray = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReconnectButton = new System.Windows.Forms.Button();
             this.ReloadPage = new System.Windows.Forms.Label();
-            this.GlobePic = new System.Windows.Forms.PictureBox();
-            this.MinButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TempLabel = new System.Windows.Forms.Label();
             this.CloudsLabel = new System.Windows.Forms.Label();
             this.TempDescLabel = new System.Windows.Forms.Label();
             this.HumidityLabel = new System.Windows.Forms.Label();
             this.WindLabel = new System.Windows.Forms.Label();
             this.PressureLabel = new System.Windows.Forms.Label();
+            this.ErrorLabel = new System.Windows.Forms.Label();
+            this.GlobePic = new System.Windows.Forms.PictureBox();
+            this.MinButton = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.MenuTray.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GlobePic)).BeginInit();
@@ -98,13 +99,22 @@
             this.MenuTray.Name = "contextMenuStrip1";
             this.MenuTray.Size = new System.Drawing.Size(94, 26);
             // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.closeToolStripMenuItem.Text = "Exit";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
+            // 
             // ReconnectButton
             // 
             this.ReconnectButton.FlatAppearance.BorderSize = 0;
             this.ReconnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ReconnectButton.Font = new System.Drawing.Font("Segoe UI Semilight", 7.75F);
             this.ReconnectButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ReconnectButton.Location = new System.Drawing.Point(136, 258);
+            this.ReconnectButton.Location = new System.Drawing.Point(136, 261);
             this.ReconnectButton.Name = "ReconnectButton";
             this.ReconnectButton.Size = new System.Drawing.Size(128, 21);
             this.ReconnectButton.TabIndex = 10;
@@ -124,12 +134,82 @@
             this.ReloadPage.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.ReloadPage.Visible = false;
             // 
+            // TempLabel
+            // 
+            this.TempLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 36.25F, System.Drawing.FontStyle.Bold);
+            this.TempLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.TempLabel.Location = new System.Drawing.Point(227, 87);
+            this.TempLabel.Name = "TempLabel";
+            this.TempLabel.Size = new System.Drawing.Size(141, 136);
+            this.TempLabel.TabIndex = 12;
+            this.TempLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // CloudsLabel
+            // 
+            this.CloudsLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.CloudsLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.CloudsLabel.Location = new System.Drawing.Point(12, 237);
+            this.CloudsLabel.Name = "CloudsLabel";
+            this.CloudsLabel.Size = new System.Drawing.Size(181, 21);
+            this.CloudsLabel.TabIndex = 13;
+            this.CloudsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TempDescLabel
+            // 
+            this.TempDescLabel.Font = new System.Drawing.Font("Segoe UI Light", 9.75F);
+            this.TempDescLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.TempDescLabel.Location = new System.Drawing.Point(227, 183);
+            this.TempDescLabel.Name = "TempDescLabel";
+            this.TempDescLabel.Size = new System.Drawing.Size(141, 25);
+            this.TempDescLabel.TabIndex = 14;
+            this.TempDescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // HumidityLabel
+            // 
+            this.HumidityLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.HumidityLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.HumidityLabel.Location = new System.Drawing.Point(12, 258);
+            this.HumidityLabel.Name = "HumidityLabel";
+            this.HumidityLabel.Size = new System.Drawing.Size(181, 21);
+            this.HumidityLabel.TabIndex = 15;
+            this.HumidityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // WindLabel
+            // 
+            this.WindLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.WindLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.WindLabel.Location = new System.Drawing.Point(207, 237);
+            this.WindLabel.Name = "WindLabel";
+            this.WindLabel.Size = new System.Drawing.Size(181, 21);
+            this.WindLabel.TabIndex = 16;
+            this.WindLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PressureLabel
+            // 
+            this.PressureLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.PressureLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.PressureLabel.Location = new System.Drawing.Point(207, 258);
+            this.PressureLabel.Name = "PressureLabel";
+            this.PressureLabel.Size = new System.Drawing.Size(181, 21);
+            this.PressureLabel.TabIndex = 17;
+            this.PressureLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ErrorLabel
+            // 
+            this.ErrorLabel.Font = new System.Drawing.Font("Segoe UI Semilight", 12.75F);
+            this.ErrorLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ErrorLabel.Location = new System.Drawing.Point(0, 211);
+            this.ErrorLabel.Name = "ErrorLabel";
+            this.ErrorLabel.Size = new System.Drawing.Size(400, 34);
+            this.ErrorLabel.TabIndex = 18;
+            this.ErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // GlobePic
             // 
             this.GlobePic.ErrorImage = null;
             this.GlobePic.Image = global::WeatherCS.Properties.Resources.www;
             this.GlobePic.InitialImage = null;
-            this.GlobePic.Location = new System.Drawing.Point(100, 44);
+            this.GlobePic.Location = new System.Drawing.Point(100, 25);
             this.GlobePic.Name = "GlobePic";
             this.GlobePic.Size = new System.Drawing.Size(200, 200);
             this.GlobePic.TabIndex = 9;
@@ -165,86 +245,17 @@
             this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
             this.CloseButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CloseButtonHover);
             // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
-            this.closeToolStripMenuItem.Text = "Exit";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
-            // 
-            // TempLabel
-            // 
-            this.TempLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 36.25F, System.Drawing.FontStyle.Bold);
-            this.TempLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.TempLabel.Location = new System.Drawing.Point(227, 87);
-            this.TempLabel.Name = "TempLabel";
-            this.TempLabel.Size = new System.Drawing.Size(141, 136);
-            this.TempLabel.TabIndex = 12;
-            this.TempLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // CloudsLabel
-            // 
-            this.CloudsLabel.Font = new System.Drawing.Font("Segoe UI Light", 12.75F);
-            this.CloudsLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.CloudsLabel.Location = new System.Drawing.Point(12, 237);
-            this.CloudsLabel.Name = "CloudsLabel";
-            this.CloudsLabel.Size = new System.Drawing.Size(181, 21);
-            this.CloudsLabel.TabIndex = 13;
-            this.CloudsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TempDescLabel
-            // 
-            this.TempDescLabel.Font = new System.Drawing.Font("Segoe UI Light", 9.75F);
-            this.TempDescLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.TempDescLabel.Location = new System.Drawing.Point(227, 183);
-            this.TempDescLabel.Name = "TempDescLabel";
-            this.TempDescLabel.Size = new System.Drawing.Size(141, 25);
-            this.TempDescLabel.TabIndex = 14;
-            this.TempDescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // HumidityLabel
-            // 
-            this.HumidityLabel.Font = new System.Drawing.Font("Segoe UI Light", 12.75F);
-            this.HumidityLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.HumidityLabel.Location = new System.Drawing.Point(12, 258);
-            this.HumidityLabel.Name = "HumidityLabel";
-            this.HumidityLabel.Size = new System.Drawing.Size(181, 21);
-            this.HumidityLabel.TabIndex = 15;
-            this.HumidityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // WindLabel
-            // 
-            this.WindLabel.Font = new System.Drawing.Font("Segoe UI Light", 12.75F);
-            this.WindLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.WindLabel.Location = new System.Drawing.Point(207, 237);
-            this.WindLabel.Name = "WindLabel";
-            this.WindLabel.Size = new System.Drawing.Size(181, 21);
-            this.WindLabel.TabIndex = 16;
-            this.WindLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // PressureLabel
-            // 
-            this.PressureLabel.Font = new System.Drawing.Font("Segoe UI Light", 12.75F);
-            this.PressureLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.PressureLabel.Location = new System.Drawing.Point(207, 258);
-            this.PressureLabel.Name = "PressureLabel";
-            this.PressureLabel.Size = new System.Drawing.Size(181, 21);
-            this.PressureLabel.TabIndex = 17;
-            this.PressureLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
+            this.Controls.Add(this.ErrorLabel);
             this.Controls.Add(this.GlobePic);
             this.Controls.Add(this.ReconnectButton);
             this.Controls.Add(this.ReloadPage);
             this.Controls.Add(this.LocationLabel);
-            this.Controls.Add(this.WeatherIco);
             this.Controls.Add(this.MinButton);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.CustomPanel);
@@ -254,6 +265,7 @@
             this.Controls.Add(this.PressureLabel);
             this.Controls.Add(this.HumidityLabel);
             this.Controls.Add(this.CloudsLabel);
+            this.Controls.Add(this.WeatherIco);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -262,6 +274,7 @@
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.TransparencyKey = System.Drawing.Color.White;
             this.Resize += new System.EventHandler(this.ToTray);
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).EndInit();
             this.MenuTray.ResumeLayout(false);
@@ -289,5 +302,6 @@
         private System.Windows.Forms.Label HumidityLabel;
         private System.Windows.Forms.Label WindLabel;
         private System.Windows.Forms.Label PressureLabel;
+        private System.Windows.Forms.Label ErrorLabel;
     }
 }

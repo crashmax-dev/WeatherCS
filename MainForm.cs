@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 // Install-Package Newtonsoft.Json
@@ -10,36 +10,53 @@ namespace WeatherCS
 {
     public partial class MainForm : Form
     {
+
+        static readonly HttpClient client = new HttpClient();
         string latt = "";
         string longt = "";
         string data = "";
+        bool fade = true;
+
         public MainForm()
         {
             InitializeComponent();
             InitializeApp();
-            LoadApp();
         }
 
         async void LoadApp()
         {
-            for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
+            if (fade)
             {
-                await Task.Delay(10);
+                for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
+                {
+                    await Task.Delay(10);
+                }
             }
+
+            fade = false;
         }
         async void ErrorHandler(string error = "")
         {
             if (error != "")
             {
+                Text = "WeatherCS";
+                Tray.Text = error;
+
                 GlobePic.Visible = true;
                 ReconnectButton.Visible = true;
                 ReloadPage.Visible = true;
-                ReloadPage.Text = error;
-            } else
+                ErrorLabel.Visible = true;
+                ErrorLabel.Text = error;
+
+                ReconnectButton.Text = "Переподключиться";
+                ReconnectButton.Enabled = true;
+            }
+            else
             {
                 GlobePic.Visible = false;
                 ReconnectButton.Visible = false;
                 ReloadPage.Visible = false;
+                ErrorLabel.Visible = false;
 
                 await Task.Delay(3600);
                 GetWeather();
@@ -49,8 +66,11 @@ namespace WeatherCS
         {
             try
             {
-                WebClient client = new WebClient();
-                data = await client.DownloadStringTaskAsync($"https://api.openweathermap.org/data/2.5/weather?units=metric&lat={latt}&lon={longt}&appid=5f11ea40424990937175d20a072e0c72");
+                string api = String.Format("https://api.openweathermap.org/data/2.5/weather?units=metric&lat={0}&lon={1}&appid=4b7f29a8e15af3ec8d463f83ce5dd419", latt, longt);
+
+                HttpResponseMessage response = await client.GetAsync(api);
+                response.EnsureSuccessStatusCode();
+                data = await response.Content.ReadAsStringAsync();
                 JObject w = JObject.Parse(data);
 
                 // title
@@ -63,27 +83,32 @@ namespace WeatherCS
                 string tempDesc = $"Feels like {(string)w["main"]["feels_like"]}°C";
                 string humidity = $"Humidity: {(string)w["main"]["humidity"]}%";
                 string pressure = $"Pressure: {(string)w["main"]["pressure"]}hPa";
-                string wind = $"Wind: {(string)w["wind"]["speed"]}m/sec";
                 string clouds = $"Clouds: {(string)w["clouds"]["all"]}%";
-
-                //tray tooltip
-                Tray.Text = $"{title}\n{temp}\n{humidity}\n{wind}";
+                string wind = $"Wind: {(string)w["wind"]["speed"]}m/sec";
 
                 // labels
                 Text = title;
-                CloudsLabel.Text = clouds;
                 TempLabel.Text = temp;
                 TempDescLabel.Text = tempDesc;
+                CloudsLabel.Text = clouds;
                 HumidityLabel.Text = humidity;
                 WindLabel.Text = wind;
                 PressureLabel.Text = pressure;
                 LocationLabel.Text = $"{name}, {region}";
 
+                //tray tooltip
+                Tray.Text = $"{name}, {region} — {temp}";
+
                 WeatherStatus();
-                ErrorHandler("1");
-            } catch
+                ErrorHandler();
+            }
+            catch
             {
-                ErrorHandler("Ошибка получения данных о погоде");
+                ErrorHandler("Ошибка получения данных с OpenWeatherMap");
+            }
+            finally
+            {
+                LoadApp();
             }
         }
 
@@ -99,21 +124,25 @@ namespace WeatherCS
         }
         async void InitializeApp()
         {
-            WebClient client = new WebClient();
-
             try
             {
-                var ip = await client.DownloadStringTaskAsync("https://api.ipify.org");
-                var data = await client.DownloadStringTaskAsync($"https://geocode.xyz/{ip}?json=1");
+                HttpResponseMessage ip = await client.GetAsync("https://api.ipify.org");
+                ip.EnsureSuccessStatusCode();
+                string responseIP = await ip.Content.ReadAsStringAsync();
 
-                JObject geo = JObject.Parse(data);
-                latt = (string)geo["latt"];
-                longt = (string)geo["longt"];
+                HttpResponseMessage geo = await client.GetAsync($"https://geocode.xyz/{responseIP}?json=1");
+                geo.EnsureSuccessStatusCode();
+
+                JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
+                latt = (string)r["latt"];
+                longt = (string)r["longt"];
 
                 GetWeather();
-            } catch
+            }
+            catch (HttpRequestException e)
             {
-                ErrorHandler("Ошибка подключения к интернету");
+                ErrorHandler(e.Message);
+                LoadApp();
             }
         }
 
@@ -168,6 +197,8 @@ namespace WeatherCS
         }
         private void Reconnect(object sender, EventArgs e)
         {
+            ReconnectButton.Text = "Подключаюсь...";
+            ReconnectButton.Enabled = false;
             InitializeApp();
         }
     }
