@@ -79,8 +79,8 @@ namespace WeatherCS
                 string title = $"Weather: {name}, {region}";
 
                 //main
-                string temp = $"{(string)w["main"]["temp"]} ℃";
-                string tempDesc = $"Feels like {(string)w["main"]["feels_like"]}°C";
+                string temp = $"{(string)w["main"]["temp"]} °C";
+                string tempDesc = $"Feels like {Math.Ceiling((double)w["main"]["feels_like"])}°C";
                 string humidity = $"Humidity: {(string)w["main"]["humidity"]}%";
                 string pressure = $"Pressure: {(string)w["main"]["pressure"]}hPa";
                 string clouds = $"Clouds: {(string)w["clouds"]["all"]}%";

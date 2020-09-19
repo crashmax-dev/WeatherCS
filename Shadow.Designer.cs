@@ -36,7 +36,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(120, 61);
             this.Name = "Shadow";
-            this.Text = "Shadow";
             this.TransparencyKey = System.Drawing.Color.White;
             this.ResumeLayout(false);
 

@@ -156,7 +156,7 @@
             // 
             // TempDescLabel
             // 
-            this.TempDescLabel.Font = new System.Drawing.Font("Segoe UI Light", 9.75F);
+            this.TempDescLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.TempDescLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.TempDescLabel.Location = new System.Drawing.Point(227, 183);
             this.TempDescLabel.Name = "TempDescLabel";
@@ -251,6 +251,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
+            this.Controls.Add(this.TempDescLabel);
             this.Controls.Add(this.ErrorLabel);
             this.Controls.Add(this.GlobePic);
             this.Controls.Add(this.ReconnectButton);
@@ -260,7 +261,6 @@
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.CustomPanel);
             this.Controls.Add(this.TempLabel);
-            this.Controls.Add(this.TempDescLabel);
             this.Controls.Add(this.WindLabel);
             this.Controls.Add(this.PressureLabel);
             this.Controls.Add(this.HumidityLabel);
@@ -274,7 +274,6 @@
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.TransparencyKey = System.Drawing.Color.White;
             this.Resize += new System.EventHandler(this.ToTray);
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).EndInit();
             this.MenuTray.ResumeLayout(false);
