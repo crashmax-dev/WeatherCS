@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WeatherCS
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Shadow
     {
 
         static readonly HttpClient client = new HttpClient();
