@@ -34,7 +34,6 @@
             this.WeatherIco = new System.Windows.Forms.PictureBox();
             this.Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.MenuTray = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReconnectButton = new System.Windows.Forms.Button();
             this.ReloadPage = new System.Windows.Forms.Label();
             this.TempLabel = new System.Windows.Forms.Label();
@@ -43,11 +42,17 @@
             this.WindLabel = new System.Windows.Forms.Label();
             this.PressureLabel = new System.Windows.Forms.Label();
             this.ErrorLabel = new System.Windows.Forms.Label();
-            this.GlobePic = new System.Windows.Forms.PictureBox();
-            this.MinButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
+            this.AboutButton = new System.Windows.Forms.Button();
+            this.SettingButton = new System.Windows.Forms.Button();
+            this.MinButton = new System.Windows.Forms.Button();
+            this.GlobePic = new System.Windows.Forms.PictureBox();
+            this.CloseButton = new System.Windows.Forms.Button();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.MenuTray.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GlobePic)).BeginInit();
@@ -84,19 +89,17 @@
             // 
             // MenuTray
             // 
+            this.MenuTray.BackColor = System.Drawing.Color.Black;
+            this.MenuTray.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.MenuTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.settingToolStripMenuItem,
+            this.toolStripSeparator1,
             this.closeToolStripMenuItem});
+            this.MenuTray.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MenuTray.Name = "contextMenuStrip1";
-            this.MenuTray.Size = new System.Drawing.Size(121, 26);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
-            this.closeToolStripMenuItem.Text = "Закрыть";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
+            this.MenuTray.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.MenuTray.Size = new System.Drawing.Size(150, 76);
             // 
             // ReconnectButton
             // 
@@ -187,51 +190,6 @@
             this.ErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ErrorLabel.Visible = false;
             // 
-            // GlobePic
-            // 
-            this.GlobePic.ErrorImage = null;
-            this.GlobePic.Image = global::WeatherCS.Properties.Resources.www;
-            this.GlobePic.InitialImage = null;
-            this.GlobePic.Location = new System.Drawing.Point(100, 21);
-            this.GlobePic.Name = "GlobePic";
-            this.GlobePic.Size = new System.Drawing.Size(200, 200);
-            this.GlobePic.TabIndex = 9;
-            this.GlobePic.TabStop = false;
-            this.GlobePic.Visible = false;
-            this.GlobePic.WaitOnLoad = true;
-            // 
-            // MinButton
-            // 
-            this.MinButton.BackColor = System.Drawing.SystemColors.Control;
-            this.MinButton.FlatAppearance.BorderSize = 0;
-            this.MinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinButton.Image = ((System.Drawing.Image)(resources.GetObject("MinButton.Image")));
-            this.MinButton.Location = new System.Drawing.Point(350, 0);
-            this.MinButton.Name = "MinButton";
-            this.MinButton.Size = new System.Drawing.Size(25, 21);
-            this.MinButton.TabIndex = 0;
-            this.MinButton.TabStop = false;
-            this.MinButton.UseVisualStyleBackColor = false;
-            this.MinButton.Click += new System.EventHandler(this.MinApp);
-            // 
-            // CloseButton
-            // 
-            this.CloseButton.BackColor = System.Drawing.SystemColors.Control;
-            this.CloseButton.FlatAppearance.BorderSize = 0;
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.CloseButton.Image = global::WeatherCS.Properties.Resources.close_gray;
-            this.CloseButton.Location = new System.Drawing.Point(375, 0);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(25, 21);
-            this.CloseButton.TabIndex = 0;
-            this.CloseButton.TabStop = false;
-            this.CloseButton.UseVisualStyleBackColor = false;
-            this.CloseButton.Click += new System.EventHandler(this.CloseApp);
-            this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
-            this.CloseButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CloseButtonHover);
-            // 
             // LocationInput
             // 
             this.LocationInput.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -257,12 +215,118 @@
             this.LocMessage.TabIndex = 20;
             this.LocMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // AboutButton
+            // 
+            this.AboutButton.BackColor = System.Drawing.SystemColors.Control;
+            this.AboutButton.FlatAppearance.BorderSize = 0;
+            this.AboutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AboutButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.AboutButton.Image = global::WeatherCS.Properties.Resources.about_gray;
+            this.AboutButton.Location = new System.Drawing.Point(25, 0);
+            this.AboutButton.Name = "AboutButton";
+            this.AboutButton.Size = new System.Drawing.Size(25, 21);
+            this.AboutButton.TabIndex = 22;
+            this.AboutButton.TabStop = false;
+            this.AboutButton.UseVisualStyleBackColor = false;
+            // 
+            // SettingButton
+            // 
+            this.SettingButton.BackColor = System.Drawing.SystemColors.Control;
+            this.SettingButton.FlatAppearance.BorderSize = 0;
+            this.SettingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.SettingButton.Image = global::WeatherCS.Properties.Resources.setting_gray;
+            this.SettingButton.Location = new System.Drawing.Point(0, 0);
+            this.SettingButton.Name = "SettingButton";
+            this.SettingButton.Size = new System.Drawing.Size(25, 21);
+            this.SettingButton.TabIndex = 21;
+            this.SettingButton.TabStop = false;
+            this.SettingButton.UseVisualStyleBackColor = false;
+            // 
+            // MinButton
+            // 
+            this.MinButton.BackColor = System.Drawing.SystemColors.Control;
+            this.MinButton.FlatAppearance.BorderSize = 0;
+            this.MinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.MinButton.Image = ((System.Drawing.Image)(resources.GetObject("MinButton.Image")));
+            this.MinButton.Location = new System.Drawing.Point(350, 0);
+            this.MinButton.Name = "MinButton";
+            this.MinButton.Size = new System.Drawing.Size(25, 21);
+            this.MinButton.TabIndex = 0;
+            this.MinButton.TabStop = false;
+            this.MinButton.UseVisualStyleBackColor = false;
+            this.MinButton.Click += new System.EventHandler(this.MinApp);
+            // 
+            // GlobePic
+            // 
+            this.GlobePic.ErrorImage = null;
+            this.GlobePic.Image = global::WeatherCS.Properties.Resources.www;
+            this.GlobePic.InitialImage = null;
+            this.GlobePic.Location = new System.Drawing.Point(100, 21);
+            this.GlobePic.Name = "GlobePic";
+            this.GlobePic.Size = new System.Drawing.Size(200, 200);
+            this.GlobePic.TabIndex = 9;
+            this.GlobePic.TabStop = false;
+            this.GlobePic.Visible = false;
+            this.GlobePic.WaitOnLoad = true;
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.BackColor = System.Drawing.SystemColors.Control;
+            this.CloseButton.FlatAppearance.BorderSize = 0;
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.CloseButton.Image = global::WeatherCS.Properties.Resources.close_gray;
+            this.CloseButton.Location = new System.Drawing.Point(375, 0);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(25, 21);
+            this.CloseButton.TabIndex = 0;
+            this.CloseButton.TabStop = false;
+            this.CloseButton.UseVisualStyleBackColor = false;
+            this.CloseButton.Click += new System.EventHandler(this.CloseApp);
+            this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
+            this.CloseButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CloseButtonHover);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.closeToolStripMenuItem.Text = "Закрыть";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
+            // 
+            // settingToolStripMenuItem
+            // 
+            this.settingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.settingToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.setting_gray;
+            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.settingToolStripMenuItem.Text = "Настройки";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(146, 6);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.aboutToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.about_gray;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.aboutToolStripMenuItem.Text = "О программе";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
+            this.Controls.Add(this.AboutButton);
+            this.Controls.Add(this.SettingButton);
             this.Controls.Add(this.ReconnectButton);
             this.Controls.Add(this.ErrorLabel);
             this.Controls.Add(this.MinButton);
@@ -317,5 +381,10 @@
         private System.Windows.Forms.Label ErrorLabel;
         private System.Windows.Forms.TextBox LocationInput;
         private System.Windows.Forms.Label LocMessage;
+        private System.Windows.Forms.Button SettingButton;
+        private System.Windows.Forms.Button AboutButton;
+        private System.Windows.Forms.ToolStripMenuItem settingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

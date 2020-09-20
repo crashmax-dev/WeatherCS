@@ -149,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\www.png" />
+    <None Include="Resources\setting-gray.png" />
+    <None Include="Resources\about-gray.png" />
     <Content Include="weather.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
