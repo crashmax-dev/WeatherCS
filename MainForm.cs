@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 // Install-Package Newtonsoft.Json
@@ -22,8 +23,7 @@ namespace WeatherCS
 
         static readonly HttpClient client = new HttpClient();
 
-        string latt = "";
-        string longt = "";
+        string city = "";
         string data = "";
         bool fadeIn = true;
 
@@ -50,67 +50,75 @@ namespace WeatherCS
             if (error != "")
             {
                 Text = "WeatherCS";
+                // 64 ???
                 Tray.Text = error;
 
+                ReloadPage.Visible = true;
                 GlobePic.Visible = true;
                 ReconnectButton.Visible = true;
-                ReloadPage.Visible = true;
-                ErrorLabel.Visible = true;
-                ErrorLabel.Text = error;
-
                 ReconnectButton.Text = "Переподключиться";
                 ReconnectButton.Enabled = true;
+                ErrorLabel.Visible = true;
+                ErrorLabel.Text = error;
             }
             else
             {
+                ReloadPage.Visible = false;
                 GlobePic.Visible = false;
                 ReconnectButton.Visible = false;
-                ReloadPage.Visible = false;
                 ErrorLabel.Visible = false;
 
+                LocMessage.Text = $"Последнее обновление: {DateTime.Now:HH:mm}";
                 await Task.Delay(60000);
                 GetWeather();
             }
         }
-        async void GetWeather()
+        async void GetWeather(string newCity = "")
         {
             try
             {
-                string api = String.Format("https://api.openweathermap.org/data/2.5/weather?units=metric&lat={0}&lon={1}&appid=4b7f29a8e15af3ec8d463f83ce5dd419", latt, longt);
-
+                string query = newCity == "" ? city : newCity;
+                string api = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid=4b7f29a8e15af3ec8d463f83ce5dd419";
                 HttpResponseMessage response = await client.GetAsync(api);
-                response.EnsureSuccessStatusCode();
+                Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync());
+
                 data = await response.Content.ReadAsStringAsync();
-                JObject w = JObject.Parse(data);
 
-                // title
-                string name = (string)w["name"];
-                string region = (string)w["sys"]["country"];
-                string title = $"Weather: {name}, {region}";
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    city = query;
+                    JObject w = JObject.Parse(data);
 
-                //main
-                string temp = $"{Math.Ceiling((double)w["main"]["temp"])}°C";
-                string tempDesc = $"Feels like {Math.Ceiling((double)w["main"]["feels_like"])}°C";
-                string humidity = $"Humidity: {(string)w["main"]["humidity"]}%";
-                string pressure = $"Pressure: {(string)w["main"]["pressure"]}hPa";
-                string clouds = $"Clouds: {(string)w["clouds"]["all"]}%";
-                string wind = $"Wind: {(string)w["wind"]["speed"]}m/sec";
+                    // title
+                    string name = (string)w["name"];
+                    string title = $"Weather: {name}";
 
-                // labels
-                Text = title;
-                TempLabel.Text = temp;
-                TempDescLabel.Text = tempDesc;
-                CloudsLabel.Text = clouds;
-                HumidityLabel.Text = humidity;
-                WindLabel.Text = wind;
-                PressureLabel.Text = pressure;
-                LocationLabel.Text = $"{name}, {region}";
+                    //main
+                    string temp = $"{Math.Ceiling((double)w["main"]["temp"])}°C";
+                    string humidity = $"Влажность: {(string)w["main"]["humidity"]}%";
+                    string pressure = $"Давление: {(string)w["main"]["pressure"]}hPa";
+                    string clouds = $"Облачность: {(string)w["clouds"]["all"]}%";
+                    string wind = $"Ветер: {(string)w["wind"]["speed"]}m/sec";
 
-                //tray tooltip
-                Tray.Text = $"{name}, {region} — {temp}";
+                    // labels
+                    Text = title;
+                    TempLabel.Text = temp;
+                    CloudsLabel.Text = clouds;
+                    HumidityLabel.Text = humidity;
+                    WindLabel.Text = wind;
+                    PressureLabel.Text = pressure;
+                    LocationInput.Text = $"{name}";
 
-                WeatherStatus();
-                ErrorHandler();
+                    //tray tooltip
+                    Tray.Text = $"{name} — {temp}";
+
+                    WeatherStatus();
+                    ErrorHandler();
+                }
+                else
+                {
+                    LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc.";
+                }
             }
             catch
             {
@@ -136,14 +144,19 @@ namespace WeatherCS
         {
             try
             {
-                HttpResponseMessage geo = await client.GetAsync("https://ipwhois.app/json/");
-                geo.EnsureSuccessStatusCode();
+                HttpResponseMessage geo = await client.GetAsync("https://ipwhois.app/json/?objects=city&lang=ru");
 
-                JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
-                latt = (string)r["latitude"];
-                longt = (string)r["longitude"];
-
-                GetWeather();
+                if (geo.StatusCode.ToString() == "OK")
+                {
+                    JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
+                    city = (string)r["city"];
+                    GetWeather();
+                }
+                else
+                {
+                    ErrorHandler("Ошибка определения вашей геолокации");
+                    LoadApp();
+                }
             }
             catch (HttpRequestException e)
             {
@@ -206,6 +219,28 @@ namespace WeatherCS
             ReconnectButton.Text = "Подключаюсь...";
             ReconnectButton.Enabled = false;
             InitializeApp();
+        }
+
+        private void UpdateLocation(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ActiveControl = null;
+                e.SuppressKeyPress = true;
+                GetWeather(LocationInput.Text);
+            }
+        }
+
+        private void EscEvent(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                ActiveControl = null;
+                LocationInput.Text = city;
+                LocationInput.Select();
+                ActiveControl = LocationInput;
+                LocationInput.Focus();
+            }
         }
     }
 }
