@@ -56,7 +56,7 @@ namespace WeatherCS
                 ReloadPage.Visible = true;
                 GlobePic.Visible = true;
                 ReconnectButton.Visible = true;
-                ReconnectButton.Text = "Переподключиться";
+                ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
                 ErrorLabel.Visible = true;
                 ErrorLabel.Text = error;
@@ -68,7 +68,8 @@ namespace WeatherCS
                 ReconnectButton.Visible = false;
                 ErrorLabel.Visible = false;
 
-                LocMessage.Text = $"Последнее обновление: {DateTime.Now:HH:mm}";
+                LocMessage.ForeColor = SystemColors.ControlDarkDark;
+                LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
                 await Task.Delay(60000);
                 GetWeather();
             }
@@ -89,40 +90,37 @@ namespace WeatherCS
                     city = query;
                     JObject w = JObject.Parse(data);
 
-                    // title
-                    string name = (string)w["name"];
-                    string title = $"Weather: {name}";
-
-                    //main
+                    // strings
                     string temp = $"{Math.Ceiling((double)w["main"]["temp"])}°C";
                     string humidity = $"Влажность: {(string)w["main"]["humidity"]}%";
-                    string pressure = $"Давление: {(string)w["main"]["pressure"]}hPa";
+                    string pressure = $"Давление: {Math.Round((int)w["main"]["pressure"] * 0.75, 1)}mmHg";
                     string clouds = $"Облачность: {(string)w["clouds"]["all"]}%";
                     string wind = $"Ветер: {(string)w["wind"]["speed"]}m/sec";
+                    string loc = (string)w["name"];
+                    string title = $"{loc} — {temp}";
 
                     // labels
                     Text = title;
+                    Tray.Text = title;
                     TempLabel.Text = temp;
                     CloudsLabel.Text = clouds;
                     HumidityLabel.Text = humidity;
                     WindLabel.Text = wind;
                     PressureLabel.Text = pressure;
-                    LocationInput.Text = $"{name}";
-
-                    //tray tooltip
-                    Tray.Text = $"{name} — {temp}";
+                    LocationInput.Text = loc;
 
                     WeatherStatus();
                     ErrorHandler();
                 }
                 else
                 {
+                    LocMessage.ForeColor = Color.Firebrick;
                     LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc.";
                 }
             }
             catch
             {
-                ErrorHandler("Ошибка получения данных с OpenWeatherMap");
+                ErrorHandler("Ошибка получения данных с OpenWeatherMap.");
             }
             finally
             {
@@ -154,7 +152,7 @@ namespace WeatherCS
                 }
                 else
                 {
-                    ErrorHandler("Ошибка определения вашей геолокации");
+                    ErrorHandler("Ошибка определения вашей геолокации.");
                     LoadApp();
                 }
             }
@@ -235,10 +233,10 @@ namespace WeatherCS
         {
             if (e.KeyCode == Keys.Escape)
             {
-                ActiveControl = null;
+                LocMessage.ForeColor = SystemColors.ControlDarkDark;
+                LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
+                e.SuppressKeyPress = true;
                 LocationInput.Text = city;
-                LocationInput.Select();
-                ActiveControl = LocationInput;
                 LocationInput.Focus();
             }
         }

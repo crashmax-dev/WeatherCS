@@ -87,15 +87,15 @@
             this.MenuTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem});
             this.MenuTray.Name = "contextMenuStrip1";
-            this.MenuTray.Size = new System.Drawing.Size(94, 26);
+            this.MenuTray.Size = new System.Drawing.Size(121, 26);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
-            this.closeToolStripMenuItem.Text = "Exit";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.closeToolStripMenuItem.Text = "Закрыть";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
             // 
             // ReconnectButton
@@ -105,12 +105,11 @@
             this.ReconnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ReconnectButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReconnectButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ReconnectButton.Location = new System.Drawing.Point(136, 254);
+            this.ReconnectButton.Location = new System.Drawing.Point(150, 254);
             this.ReconnectButton.Name = "ReconnectButton";
-            this.ReconnectButton.Size = new System.Drawing.Size(128, 23);
+            this.ReconnectButton.Size = new System.Drawing.Size(100, 23);
             this.ReconnectButton.TabIndex = 0;
             this.ReconnectButton.TabStop = false;
-            this.ReconnectButton.Text = "Переподключиться";
             this.ReconnectButton.UseVisualStyleBackColor = false;
             this.ReconnectButton.Visible = false;
             this.ReconnectButton.Click += new System.EventHandler(this.Reconnect);
@@ -193,7 +192,7 @@
             this.GlobePic.ErrorImage = null;
             this.GlobePic.Image = global::WeatherCS.Properties.Resources.www;
             this.GlobePic.InitialImage = null;
-            this.GlobePic.Location = new System.Drawing.Point(100, 22);
+            this.GlobePic.Location = new System.Drawing.Point(100, 21);
             this.GlobePic.Name = "GlobePic";
             this.GlobePic.Size = new System.Drawing.Size(200, 200);
             this.GlobePic.TabIndex = 9;
@@ -250,7 +249,7 @@
             // 
             // LocMessage
             // 
-            this.LocMessage.Font = new System.Drawing.Font("Segoe UI Semilight", 7.75F);
+            this.LocMessage.Font = new System.Drawing.Font("Segoe UI Semilight", 8.75F);
             this.LocMessage.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.LocMessage.Location = new System.Drawing.Point(0, 72);
             this.LocMessage.Name = "LocMessage";
@@ -266,13 +265,13 @@
             this.ClientSize = new System.Drawing.Size(400, 300);
             this.Controls.Add(this.ReconnectButton);
             this.Controls.Add(this.ErrorLabel);
+            this.Controls.Add(this.MinButton);
             this.Controls.Add(this.GlobePic);
+            this.Controls.Add(this.CloseButton);
+            this.Controls.Add(this.CustomPanel);
             this.Controls.Add(this.ReloadPage);
             this.Controls.Add(this.LocationInput);
             this.Controls.Add(this.LocMessage);
-            this.Controls.Add(this.MinButton);
-            this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.CustomPanel);
             this.Controls.Add(this.WindLabel);
             this.Controls.Add(this.PressureLabel);
             this.Controls.Add(this.HumidityLabel);
@@ -284,7 +283,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(400, 300);
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
