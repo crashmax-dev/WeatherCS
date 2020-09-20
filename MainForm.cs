@@ -79,7 +79,7 @@ namespace WeatherCS
                 string title = $"Weather: {name}, {region}";
 
                 //main
-                string temp = $"{(string)w["main"]["temp"]} °C";
+                string temp = $"{Math.Ceiling((double)w["main"]["temp"])}°C";
                 string tempDesc = $"Feels like {Math.Ceiling((double)w["main"]["feels_like"])}°C";
                 string humidity = $"Humidity: {(string)w["main"]["humidity"]}%";
                 string pressure = $"Pressure: {(string)w["main"]["pressure"]}hPa";
@@ -126,16 +126,12 @@ namespace WeatherCS
         {
             try
             {
-                HttpResponseMessage ip = await client.GetAsync("https://api.ipify.org");
-                ip.EnsureSuccessStatusCode();
-                string responseIP = await ip.Content.ReadAsStringAsync();
-
-                HttpResponseMessage geo = await client.GetAsync($"https://geocode.xyz/{responseIP}?json=1");
+                HttpResponseMessage geo = await client.GetAsync("https://ipwhois.app/json/");
                 geo.EnsureSuccessStatusCode();
 
                 JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
-                latt = (string)r["latt"];
-                longt = (string)r["longt"];
+                latt = (string)r["latitude"];
+                longt = (string)r["longitude"];
 
                 GetWeather();
             }

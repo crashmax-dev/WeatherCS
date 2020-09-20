@@ -138,9 +138,9 @@
             // 
             this.TempLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 36.25F, System.Drawing.FontStyle.Bold);
             this.TempLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.TempLabel.Location = new System.Drawing.Point(227, 87);
+            this.TempLabel.Location = new System.Drawing.Point(211, 87);
             this.TempLabel.Name = "TempLabel";
-            this.TempLabel.Size = new System.Drawing.Size(141, 136);
+            this.TempLabel.Size = new System.Drawing.Size(177, 136);
             this.TempLabel.TabIndex = 12;
             this.TempLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
