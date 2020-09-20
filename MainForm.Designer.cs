@@ -288,6 +288,7 @@
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.TopMost = true;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EscEvent);
             this.Resize += new System.EventHandler(this.ToTray);
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).EndInit();
