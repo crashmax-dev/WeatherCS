@@ -117,7 +117,8 @@
             this.ReconnectButton.Location = new System.Drawing.Point(136, 261);
             this.ReconnectButton.Name = "ReconnectButton";
             this.ReconnectButton.Size = new System.Drawing.Size(128, 21);
-            this.ReconnectButton.TabIndex = 10;
+            this.ReconnectButton.TabIndex = 0;
+            this.ReconnectButton.TabStop = false;
             this.ReconnectButton.Text = "Переподключиться";
             this.ReconnectButton.UseVisualStyleBackColor = false;
             this.ReconnectButton.Visible = false;
@@ -222,11 +223,13 @@
             this.MinButton.BackColor = System.Drawing.SystemColors.Control;
             this.MinButton.FlatAppearance.BorderSize = 0;
             this.MinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinButton.ForeColor = System.Drawing.SystemColors.Control;
             this.MinButton.Image = ((System.Drawing.Image)(resources.GetObject("MinButton.Image")));
             this.MinButton.Location = new System.Drawing.Point(350, 0);
             this.MinButton.Name = "MinButton";
             this.MinButton.Size = new System.Drawing.Size(25, 21);
-            this.MinButton.TabIndex = 1;
+            this.MinButton.TabIndex = 0;
+            this.MinButton.TabStop = false;
             this.MinButton.UseVisualStyleBackColor = false;
             this.MinButton.Click += new System.EventHandler(this.MinApp);
             // 
@@ -235,11 +238,13 @@
             this.CloseButton.BackColor = System.Drawing.SystemColors.Control;
             this.CloseButton.FlatAppearance.BorderSize = 0;
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.ForeColor = System.Drawing.SystemColors.Control;
             this.CloseButton.Image = global::WeatherCS.Properties.Resources.close_gray;
             this.CloseButton.Location = new System.Drawing.Point(375, 0);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(25, 21);
             this.CloseButton.TabIndex = 0;
+            this.CloseButton.TabStop = false;
             this.CloseButton.UseVisualStyleBackColor = false;
             this.CloseButton.Click += new System.EventHandler(this.CloseApp);
             this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
@@ -251,7 +256,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
-            this.Controls.Add(this.TempDescLabel);
             this.Controls.Add(this.ErrorLabel);
             this.Controls.Add(this.GlobePic);
             this.Controls.Add(this.ReconnectButton);
@@ -260,12 +264,13 @@
             this.Controls.Add(this.MinButton);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.CustomPanel);
-            this.Controls.Add(this.TempLabel);
             this.Controls.Add(this.WindLabel);
             this.Controls.Add(this.PressureLabel);
             this.Controls.Add(this.HumidityLabel);
             this.Controls.Add(this.CloudsLabel);
             this.Controls.Add(this.WeatherIco);
+            this.Controls.Add(this.TempDescLabel);
+            this.Controls.Add(this.TempLabel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

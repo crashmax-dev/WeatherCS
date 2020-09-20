@@ -8,14 +8,24 @@ using Newtonsoft.Json.Linq;
 
 namespace WeatherCS
 {
-    public partial class MainForm : Shadow
+    public partial class MainForm : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle = 0x20000;
+                return cp;
+            }
+        }
 
         static readonly HttpClient client = new HttpClient();
+
         string latt = "";
         string longt = "";
         string data = "";
-        bool fade = true;
+        bool fadeIn = true;
 
         public MainForm()
         {
@@ -25,15 +35,15 @@ namespace WeatherCS
 
         async void LoadApp()
         {
-            if (fade)
+            if (fadeIn)
             {
                 for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
                 {
                     await Task.Delay(10);
                 }
-            }
+            } else { Opacity = 0.95; }
 
-            fade = false;
+            fadeIn = false;
         }
         async void ErrorHandler(string error = "")
         {
