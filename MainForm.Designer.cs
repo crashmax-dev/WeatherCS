@@ -58,6 +58,7 @@
             this.DescriptionErrorLabel = new System.Windows.Forms.Label();
             this.ReconnectButton = new System.Windows.Forms.Button();
             this.ErrorPanel = new System.Windows.Forms.Panel();
+            this.DescriptionPic = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.MenuTray.SuspendLayout();
             this.SettingPanel.SuspendLayout();
@@ -143,7 +144,7 @@
             // 
             this.CloudsLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.CloudsLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.CloudsLabel.Location = new System.Drawing.Point(0, 216);
+            this.CloudsLabel.Location = new System.Drawing.Point(0, 223);
             this.CloudsLabel.Name = "CloudsLabel";
             this.CloudsLabel.Size = new System.Drawing.Size(200, 21);
             this.CloudsLabel.TabIndex = 13;
@@ -153,7 +154,7 @@
             // 
             this.HumidityLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.HumidityLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.HumidityLabel.Location = new System.Drawing.Point(0, 237);
+            this.HumidityLabel.Location = new System.Drawing.Point(0, 244);
             this.HumidityLabel.Name = "HumidityLabel";
             this.HumidityLabel.Size = new System.Drawing.Size(200, 21);
             this.HumidityLabel.TabIndex = 15;
@@ -163,7 +164,7 @@
             // 
             this.WindLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.WindLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.WindLabel.Location = new System.Drawing.Point(200, 216);
+            this.WindLabel.Location = new System.Drawing.Point(200, 223);
             this.WindLabel.Name = "WindLabel";
             this.WindLabel.Size = new System.Drawing.Size(200, 21);
             this.WindLabel.TabIndex = 16;
@@ -173,7 +174,7 @@
             // 
             this.PressureLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.PressureLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.PressureLabel.Location = new System.Drawing.Point(200, 237);
+            this.PressureLabel.Location = new System.Drawing.Point(200, 244);
             this.PressureLabel.Name = "PressureLabel";
             this.PressureLabel.Size = new System.Drawing.Size(200, 21);
             this.PressureLabel.TabIndex = 17;
@@ -198,7 +199,7 @@
             // 
             // LocMessage
             // 
-            this.LocMessage.Font = new System.Drawing.Font("Segoe UI Semilight", 8.75F);
+            this.LocMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.LocMessage.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.LocMessage.Location = new System.Drawing.Point(0, 51);
             this.LocMessage.Name = "LocMessage";
@@ -281,7 +282,7 @@
             // 
             // LabelLocationS
             // 
-            this.LabelLocationS.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
+            this.LabelLocationS.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.LabelLocationS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.LabelLocationS.Location = new System.Drawing.Point(11, 6);
             this.LabelLocationS.Name = "LabelLocationS";
@@ -292,7 +293,7 @@
             // 
             // SettingsMessage
             // 
-            this.SettingsMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
+            this.SettingsMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.SettingsMessage.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.SettingsMessage.Location = new System.Drawing.Point(12, 247);
             this.SettingsMessage.Name = "SettingsMessage";
@@ -318,6 +319,7 @@
             // 
             // Main
             // 
+            this.Main.Controls.Add(this.DescriptionPic);
             this.Main.Controls.Add(this.LocationInput);
             this.Main.Controls.Add(this.LocMessage);
             this.Main.Controls.Add(this.WindLabel);
@@ -392,6 +394,16 @@
             this.ErrorPanel.TabIndex = 0;
             this.ErrorPanel.Visible = false;
             // 
+            // DescriptionPic
+            // 
+            this.DescriptionPic.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.DescriptionPic.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.DescriptionPic.Location = new System.Drawing.Point(0, 190);
+            this.DescriptionPic.Name = "DescriptionPic";
+            this.DescriptionPic.Size = new System.Drawing.Size(200, 21);
+            this.DescriptionPic.TabIndex = 21;
+            this.DescriptionPic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,9 +415,9 @@
             this.Controls.Add(this.SettingButton);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.TitleBar);
+            this.Controls.Add(this.Main);
             this.Controls.Add(this.SettingPanel);
             this.Controls.Add(this.ErrorPanel);
-            this.Controls.Add(this.Main);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -461,5 +473,6 @@
         private System.Windows.Forms.Label LabelLocationS;
         private System.Windows.Forms.Label SettingsMessage;
         private System.Windows.Forms.TextBox LocationInputS;
+        private System.Windows.Forms.Label DescriptionPic;
     }
 }

@@ -149,11 +149,13 @@ namespace WeatherCS
             {
                 foreach (var i in w["weather"])
                 {
+                    DescriptionPic.Text = (string)i["description"];
                     WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", i["icon"]);
                     await Task.Delay(5000);
                 }
             } else
             {
+                DescriptionPic.Text = (string)w["weather"][0]["description"];
                 WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w["weather"][0]["icon"]);
             }
         }
