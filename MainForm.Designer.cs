@@ -32,11 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.WeatherIco = new System.Windows.Forms.PictureBox();
             this.Tray = new System.Windows.Forms.NotifyIcon(this.components);
-            this.MenuTray = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.TrayAboutButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.TraySettingsButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.TraySeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.TrayCloseButton = new System.Windows.Forms.ToolStripMenuItem();
             this.TempLabel = new System.Windows.Forms.Label();
             this.CloudsLabel = new System.Windows.Forms.Label();
             this.HumidityLabel = new System.Windows.Forms.Label();
@@ -46,21 +46,21 @@
             this.LocMessage = new System.Windows.Forms.Label();
             this.AboutButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
-            this.MinButton = new System.Windows.Forms.Button();
+            this.MinimizeButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SettingPanel = new System.Windows.Forms.Panel();
             this.LabelLocationS = new System.Windows.Forms.Label();
             this.SettingsMessage = new System.Windows.Forms.Label();
-            this.LocationInputS = new System.Windows.Forms.TextBox();
+            this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.Main = new System.Windows.Forms.Panel();
+            this.DescriptionPic = new System.Windows.Forms.Label();
             this.TitleBar = new System.Windows.Forms.Label();
             this.ErrGlobePic = new System.Windows.Forms.PictureBox();
             this.DescriptionErrorLabel = new System.Windows.Forms.Label();
             this.ReconnectButton = new System.Windows.Forms.Button();
             this.ErrorPanel = new System.Windows.Forms.Panel();
-            this.DescriptionPic = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
-            this.MenuTray.SuspendLayout();
+            this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
             this.Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ErrGlobePic)).BeginInit();
@@ -81,54 +81,52 @@
             // 
             // Tray
             // 
-            this.Tray.ContextMenuStrip = this.MenuTray;
+            this.Tray.ContextMenuStrip = this.TrayMenu;
             this.Tray.Icon = ((System.Drawing.Icon)(resources.GetObject("Tray.Icon")));
-            this.Tray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ShowApp);
             // 
-            // MenuTray
+            // TrayMenu
             // 
-            this.MenuTray.BackColor = System.Drawing.Color.Black;
-            this.MenuTray.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.MenuTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.settingToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.closeToolStripMenuItem});
-            this.MenuTray.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.MenuTray.Name = "contextMenuStrip1";
-            this.MenuTray.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MenuTray.Size = new System.Drawing.Size(150, 76);
+            this.TrayMenu.BackColor = System.Drawing.Color.Black;
+            this.TrayMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.TrayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TrayAboutButton,
+            this.TraySettingsButton,
+            this.TraySeparator,
+            this.TrayCloseButton});
+            this.TrayMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.TrayMenu.Name = "contextMenuStrip1";
+            this.TrayMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.TrayMenu.Size = new System.Drawing.Size(181, 98);
             // 
-            // aboutToolStripMenuItem
+            // TrayAboutButton
             // 
-            this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.aboutToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.about_gray;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.aboutToolStripMenuItem.Text = "О программе";
+            this.TrayAboutButton.ForeColor = System.Drawing.Color.White;
+            this.TrayAboutButton.Image = global::WeatherCS.Properties.Resources.about_gray;
+            this.TrayAboutButton.Name = "TrayAboutButton";
+            this.TrayAboutButton.Size = new System.Drawing.Size(180, 22);
+            this.TrayAboutButton.Text = "О программе";
             // 
-            // settingToolStripMenuItem
+            // TraySettingsButton
             // 
-            this.settingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.settingToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.setting_gray;
-            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.settingToolStripMenuItem.Text = "Настройки";
+            this.TraySettingsButton.ForeColor = System.Drawing.Color.White;
+            this.TraySettingsButton.Image = global::WeatherCS.Properties.Resources.setting_gray;
+            this.TraySettingsButton.Name = "TraySettingsButton";
+            this.TraySettingsButton.Size = new System.Drawing.Size(180, 22);
+            this.TraySettingsButton.Text = "Настройки";
             // 
-            // toolStripSeparator1
+            // TraySeparator
             // 
-            this.toolStripSeparator1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(146, 6);
+            this.TraySeparator.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.TraySeparator.Name = "TraySeparator";
+            this.TraySeparator.Size = new System.Drawing.Size(177, 6);
             // 
-            // closeToolStripMenuItem
+            // TrayCloseButton
             // 
-            this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.closeToolStripMenuItem.Text = "Закрыть";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
+            this.TrayCloseButton.ForeColor = System.Drawing.Color.White;
+            this.TrayCloseButton.Image = global::WeatherCS.Properties.Resources.close_gray;
+            this.TrayCloseButton.Name = "TrayCloseButton";
+            this.TrayCloseButton.Size = new System.Drawing.Size(180, 22);
+            this.TrayCloseButton.Text = "Закрыть";
             // 
             // TempLabel
             // 
@@ -193,9 +191,7 @@
             this.LocationInput.TabIndex = 19;
             this.LocationInput.TabStop = false;
             this.LocationInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.LocationInput.TextChanged += new System.EventHandler(this.LabelFontSize);
             this.LocationInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UpdateLocation);
-            this.LocationInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RegExpLocationInput);
             // 
             // LocMessage
             // 
@@ -234,22 +230,20 @@
             this.SettingButton.TabIndex = 21;
             this.SettingButton.TabStop = false;
             this.SettingButton.UseVisualStyleBackColor = false;
-            this.SettingButton.Click += new System.EventHandler(this.OpenSettings);
             // 
-            // MinButton
+            // MinimizeButton
             // 
-            this.MinButton.BackColor = System.Drawing.SystemColors.Control;
-            this.MinButton.FlatAppearance.BorderSize = 0;
-            this.MinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinButton.Image = ((System.Drawing.Image)(resources.GetObject("MinButton.Image")));
-            this.MinButton.Location = new System.Drawing.Point(350, 0);
-            this.MinButton.Name = "MinButton";
-            this.MinButton.Size = new System.Drawing.Size(25, 21);
-            this.MinButton.TabIndex = 0;
-            this.MinButton.TabStop = false;
-            this.MinButton.UseVisualStyleBackColor = false;
-            this.MinButton.Click += new System.EventHandler(this.MinApp);
+            this.MinimizeButton.BackColor = System.Drawing.SystemColors.Control;
+            this.MinimizeButton.FlatAppearance.BorderSize = 0;
+            this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinimizeButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.MinimizeButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeButton.Image")));
+            this.MinimizeButton.Location = new System.Drawing.Point(350, 0);
+            this.MinimizeButton.Name = "MinimizeButton";
+            this.MinimizeButton.Size = new System.Drawing.Size(25, 21);
+            this.MinimizeButton.TabIndex = 0;
+            this.MinimizeButton.TabStop = false;
+            this.MinimizeButton.UseVisualStyleBackColor = false;
             // 
             // CloseButton
             // 
@@ -264,16 +258,13 @@
             this.CloseButton.TabIndex = 0;
             this.CloseButton.TabStop = false;
             this.CloseButton.UseVisualStyleBackColor = false;
-            this.CloseButton.Click += new System.EventHandler(this.CloseApp);
-            this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
-            this.CloseButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CloseButtonHover);
             // 
             // SettingPanel
             // 
             this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.SettingPanel.Controls.Add(this.LabelLocationS);
             this.SettingPanel.Controls.Add(this.SettingsMessage);
-            this.SettingPanel.Controls.Add(this.LocationInputS);
+            this.SettingPanel.Controls.Add(this.SettingsLocation);
             this.SettingPanel.Location = new System.Drawing.Point(0, 21);
             this.SettingPanel.Name = "SettingPanel";
             this.SettingPanel.Size = new System.Drawing.Size(400, 279);
@@ -302,20 +293,18 @@
             this.SettingsMessage.Text = "Настройки успешно сохранены!";
             this.SettingsMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // LocationInputS
+            // SettingsLocation
             // 
-            this.LocationInputS.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.LocationInputS.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LocationInputS.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
-            this.LocationInputS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LocationInputS.Location = new System.Drawing.Point(11, 23);
-            this.LocationInputS.MaxLength = 64;
-            this.LocationInputS.Name = "LocationInputS";
-            this.LocationInputS.Size = new System.Drawing.Size(379, 30);
-            this.LocationInputS.TabIndex = 0;
-            this.LocationInputS.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.LocationInputS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UpdateLocationS);
-            this.LocationInputS.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RegExpLocationInput);
+            this.SettingsLocation.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsLocation.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsLocation.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
+            this.SettingsLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsLocation.Location = new System.Drawing.Point(11, 23);
+            this.SettingsLocation.MaxLength = 64;
+            this.SettingsLocation.Name = "SettingsLocation";
+            this.SettingsLocation.Size = new System.Drawing.Size(379, 30);
+            this.SettingsLocation.TabIndex = 0;
+            this.SettingsLocation.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Main
             // 
@@ -333,6 +322,16 @@
             this.Main.Size = new System.Drawing.Size(400, 279);
             this.Main.TabIndex = 25;
             // 
+            // DescriptionPic
+            // 
+            this.DescriptionPic.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.DescriptionPic.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.DescriptionPic.Location = new System.Drawing.Point(0, 190);
+            this.DescriptionPic.Name = "DescriptionPic";
+            this.DescriptionPic.Size = new System.Drawing.Size(200, 21);
+            this.DescriptionPic.TabIndex = 21;
+            this.DescriptionPic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // TitleBar
             // 
             this.TitleBar.BackColor = System.Drawing.SystemColors.Control;
@@ -340,7 +339,6 @@
             this.TitleBar.Name = "TitleBar";
             this.TitleBar.Size = new System.Drawing.Size(400, 21);
             this.TitleBar.TabIndex = 21;
-            this.TitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMove);
             // 
             // ErrGlobePic
             // 
@@ -380,7 +378,6 @@
             this.ReconnectButton.TabIndex = 0;
             this.ReconnectButton.TabStop = false;
             this.ReconnectButton.UseVisualStyleBackColor = false;
-            this.ReconnectButton.Click += new System.EventHandler(this.Reconnect);
             // 
             // ErrorPanel
             // 
@@ -394,16 +391,6 @@
             this.ErrorPanel.TabIndex = 0;
             this.ErrorPanel.Visible = false;
             // 
-            // DescriptionPic
-            // 
-            this.DescriptionPic.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.DescriptionPic.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.DescriptionPic.Location = new System.Drawing.Point(0, 190);
-            this.DescriptionPic.Name = "DescriptionPic";
-            this.DescriptionPic.Size = new System.Drawing.Size(200, 21);
-            this.DescriptionPic.TabIndex = 21;
-            this.DescriptionPic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,7 +398,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
             this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.MinButton);
+            this.Controls.Add(this.MinimizeButton);
             this.Controls.Add(this.SettingButton);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.TitleBar);
@@ -428,10 +415,8 @@
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EscEvent);
-            this.Resize += new System.EventHandler(this.ToTray);
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).EndInit();
-            this.MenuTray.ResumeLayout(false);
+            this.TrayMenu.ResumeLayout(false);
             this.SettingPanel.ResumeLayout(false);
             this.SettingPanel.PerformLayout();
             this.Main.ResumeLayout(false);
@@ -446,11 +431,11 @@
         #endregion
 
         private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.Button MinButton;
+        private System.Windows.Forms.Button MinimizeButton;
         private System.Windows.Forms.PictureBox WeatherIco;
         private System.Windows.Forms.NotifyIcon Tray;
-        private System.Windows.Forms.ContextMenuStrip MenuTray;
-        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip TrayMenu;
+        private System.Windows.Forms.ToolStripMenuItem TrayCloseButton;
         private System.Windows.Forms.Label TempLabel;
         private System.Windows.Forms.Label CloudsLabel;
         private System.Windows.Forms.Label HumidityLabel;
@@ -460,9 +445,9 @@
         private System.Windows.Forms.Label LocMessage;
         private System.Windows.Forms.Button SettingButton;
         private System.Windows.Forms.Button AboutButton;
-        private System.Windows.Forms.ToolStripMenuItem settingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TraySettingsButton;
+        private System.Windows.Forms.ToolStripSeparator TraySeparator;
+        private System.Windows.Forms.ToolStripMenuItem TrayAboutButton;
         private System.Windows.Forms.Panel SettingPanel;
         private System.Windows.Forms.Panel Main;
         private System.Windows.Forms.Label TitleBar;
@@ -472,7 +457,7 @@
         private System.Windows.Forms.Panel ErrorPanel;
         private System.Windows.Forms.Label LabelLocationS;
         private System.Windows.Forms.Label SettingsMessage;
-        private System.Windows.Forms.TextBox LocationInputS;
+        private System.Windows.Forms.TextBox SettingsLocation;
         private System.Windows.Forms.Label DescriptionPic;
     }
 }

@@ -25,6 +25,103 @@ namespace WeatherCS
         public MainForm()
         {
             InitializeComponent();
+
+            Resize += (s, e) =>
+            {
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    Hide();
+                    Tray.Visible = true;
+                }
+                else if (FormWindowState.Normal == WindowState)
+                { Tray.Visible = false; }
+            };
+            KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Escape)
+                {
+                    LocMessage.ForeColor = SystemColors.ControlDarkDark;
+                    LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
+                    e.SuppressKeyPress = true;
+                    LocationInput.Text = GetRegistry("location");
+                    LocationInput.Focus();
+                }
+            };
+
+            TitleBar.MouseDown += (s, e) =>
+            {
+                TitleBar.Capture = false;
+                Message m = Message.Create(Handle, 161, new IntPtr(2), IntPtr.Zero);
+                WndProc(ref m);
+            };
+            MinimizeButton.Click += (s, e) => { WindowState = FormWindowState.Minimized; };
+            CloseButton.Click += (s, e) => { Close(); };
+            CloseButton.MouseMove += (s, e) =>
+            {
+                CloseButton.BackColor = Color.FromArgb(255, 38, 60);
+                CloseButton.Image = Properties.Resources.close_white;
+            };
+            CloseButton.MouseLeave += (s, e) =>
+            {
+                CloseButton.BackColor = SystemColors.Control;
+                CloseButton.Image = Properties.Resources.close_gray;
+            };
+            SettingButton.Click += (s, e) =>
+            {
+                SettingPanel.Visible = !SettingPanel.Visible;
+                SettingButton.BackColor = SettingPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
+                SettingsMessage.Visible = false;
+            };
+
+            Tray.MouseClick += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    Show();
+                    Tray.Visible = false;
+                    WindowState = FormWindowState.Normal;
+                }
+            };
+            TrayCloseButton.Click += (s, e) => { Close(); };
+            
+            LocationInput.KeyDown += (s, e) => { UpdateLocation(s, e); };
+            LocationInput.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
+            LocationInput.TextChanged += (s, e) =>
+            {
+                int i = LocationInput.TextLength;
+
+                if (i >= 25)
+                {
+                    LocationInput.Font = new Font("Segoe UI Semibold", 16.75F);
+                    LocationInput.Location = new Point(11, 15);
+                }
+                else if (i >= 20)
+                {
+                    LocationInput.Location = new Point(11, 10);
+                    LocationInput.Font = new Font("Segoe UI Semibold", 18.75F);
+                }
+                else if (i >= 15)
+                {
+                    LocationInput.Location = new Point(11, 6);
+                    LocationInput.Font = new Font("Segoe UI Semibold", 20.75F);
+                }
+                else
+                {
+                    LocationInput.Location = new Point(11, 3);
+                    LocationInput.Font = new Font("Segoe UI Semibold", 27.75F);
+                }
+            };
+
+            SettingsLocation.KeyDown += (s, e) => { UpdateLocation(s, e); };
+            SettingsLocation.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
+
+            ReconnectButton.Click += (s, e) =>
+            {
+                ReconnectButton.Text = "Подключаюсь...";
+                ReconnectButton.Enabled = false;
+                InitializeApp();
+            };
+
             InitializeApp();
         }
 
@@ -102,7 +199,7 @@ namespace WeatherCS
                     WindLabel.Text = wind;
                     PressureLabel.Text = pressure;
                     LocationInput.Text = loc;
-                    LocationInputS.Text = loc;
+                    SettingsLocation.Text = loc;
 
                     WeatherStatus();
                     ErrorHandler();
@@ -186,19 +283,13 @@ namespace WeatherCS
             }
         }
 
-        public string FirstLetterToUpper(string str)
-        {
-            return Char.ToUpper(str[0]) + str.Substring(1);
-        }
-
-        private void RegistryApp(string key, string value)
+        void RegistryApp(string key, string value)
         {
             using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
-                if (reg.GetValue(key) == null)
-                    reg.SetValue(key, value);
+                if (reg.GetValue(key) == null) reg.SetValue(key, value);
         }
 
-        private static string GetRegistry(string key)
+        string GetRegistry(string key)
         {
             using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
                 if (reg.GetValue(key) != null)
@@ -207,137 +298,34 @@ namespace WeatherCS
                     return "";
         }
 
-        private void SetRegistry(string key, string value)
+        void SetRegistry(string key, string value)
         {
             using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
                 reg.SetValue(key, value);
         }
 
-        private void FormMove(object sender, MouseEventArgs e)
+        string FirstLetterToUpper(string str)
         {
-            TitleBar.Capture = false;
-            Message m = Message.Create(Handle, 161, new IntPtr(2), IntPtr.Zero);
-            WndProc(ref m);
+            return Char.ToUpper(str[0]) + str.Substring(1);
         }
 
-        private void CloseApp(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void MinApp(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void CloseButtonHover(object sender, MouseEventArgs e)
-        {
-            CloseButton.BackColor = Color.FromArgb(255, 38, 60);
-            CloseButton.Image = Properties.Resources.close_white;
-        }
-
-        private void CloseButtonLeave(object sender, EventArgs e)
-        {
-            CloseButton.BackColor = SystemColors.Control;
-            CloseButton.Image = Properties.Resources.close_gray;
-        }
-
-        private void ToTray(object sender, EventArgs e)
-        {
-            if (WindowState == FormWindowState.Minimized)
-            {
-                Hide();
-                Tray.Visible = true;
-            }
-            else if (FormWindowState.Normal == WindowState)
-            { Tray.Visible = false; }
-        }
-
-        private void ShowApp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Show();
-                Tray.Visible = false;
-                WindowState = FormWindowState.Normal;
-            }
-        }
-        private void Reconnect(object sender, EventArgs e)
-        {
-            ReconnectButton.Text = "Подключаюсь...";
-            ReconnectButton.Enabled = false;
-            InitializeApp();
-        }
-
-        private void UpdateLocation(object sender, KeyEventArgs e)
+        void UpdateLocation(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 ActiveControl = null;
                 e.SuppressKeyPress = true;
-                GetWeather(LocationInput.Text);
+                GetWeather((sender as TextBox).Text);
             }
         }
 
-        private void UpdateLocationS(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                ActiveControl = null;
-                e.SuppressKeyPress = true;
-                GetWeather(LocationInputS.Text);
-            }
-        }
-
-        private void EscEvent(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                LocMessage.ForeColor = SystemColors.ControlDarkDark;
-                LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
-                e.SuppressKeyPress = true;
-                LocationInput.Text = GetRegistry("location");
-                LocationInput.Focus();
-            }
-        }
-
-        private void RegExpLocationInput(object sender, KeyPressEventArgs e)
+        void RegExpLocationInput(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) &&
                 !char.IsLetter(e.KeyChar) &&
                 (e.KeyChar != ' ' && e.KeyChar != '-'))
             {
                 e.Handled = true;
-            }
-        }
-
-        private void OpenSettings(object sender, EventArgs e)
-        {
-            SettingPanel.Visible = SettingPanel.Visible ? false : true;
-            SettingButton.BackColor = SettingPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
-            SettingsMessage.Visible = false;
-        }
-
-        private void LabelFontSize(object sender, EventArgs e)
-        {
-            int i = LocationInput.TextLength;
-
-            if (i >= 25)
-            {
-                LocationInput.Font = new Font("Segoe UI Semibold", 16.75F);
-                LocationInput.Location = new Point(11, 15);
-            } else if(i >= 20)
-            {
-                LocationInput.Location = new Point(11, 10);
-                LocationInput.Font = new Font("Segoe UI Semibold", 18.75F);
-            } else if(i >= 15)
-            {
-                LocationInput.Location = new Point(11, 6);
-                LocationInput.Font = new Font("Segoe UI Semibold", 20.75F);
-            } else
-            {
-                LocationInput.Location = new Point(11, 3);
-                LocationInput.Font = new Font("Segoe UI Semibold", 27.75F);
             }
         }
     }
