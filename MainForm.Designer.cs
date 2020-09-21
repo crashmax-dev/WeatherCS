@@ -50,7 +50,6 @@
             this.CloseButton = new System.Windows.Forms.Button();
             this.SettingPanel = new System.Windows.Forms.Panel();
             this.LabelLocationS = new System.Windows.Forms.Label();
-            this.SettingsMessage = new System.Windows.Forms.Label();
             this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.Main = new System.Windows.Forms.Panel();
             this.DescriptionPic = new System.Windows.Forms.Label();
@@ -96,14 +95,14 @@
             this.TrayMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.TrayMenu.Name = "contextMenuStrip1";
             this.TrayMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.TrayMenu.Size = new System.Drawing.Size(181, 98);
+            this.TrayMenu.Size = new System.Drawing.Size(150, 76);
             // 
             // TrayAboutButton
             // 
             this.TrayAboutButton.ForeColor = System.Drawing.Color.White;
             this.TrayAboutButton.Image = global::WeatherCS.Properties.Resources.about_gray;
             this.TrayAboutButton.Name = "TrayAboutButton";
-            this.TrayAboutButton.Size = new System.Drawing.Size(180, 22);
+            this.TrayAboutButton.Size = new System.Drawing.Size(149, 22);
             this.TrayAboutButton.Text = "О программе";
             // 
             // TraySettingsButton
@@ -111,21 +110,21 @@
             this.TraySettingsButton.ForeColor = System.Drawing.Color.White;
             this.TraySettingsButton.Image = global::WeatherCS.Properties.Resources.setting_gray;
             this.TraySettingsButton.Name = "TraySettingsButton";
-            this.TraySettingsButton.Size = new System.Drawing.Size(180, 22);
+            this.TraySettingsButton.Size = new System.Drawing.Size(149, 22);
             this.TraySettingsButton.Text = "Настройки";
             // 
             // TraySeparator
             // 
             this.TraySeparator.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.TraySeparator.Name = "TraySeparator";
-            this.TraySeparator.Size = new System.Drawing.Size(177, 6);
+            this.TraySeparator.Size = new System.Drawing.Size(146, 6);
             // 
             // TrayCloseButton
             // 
             this.TrayCloseButton.ForeColor = System.Drawing.Color.White;
             this.TrayCloseButton.Image = global::WeatherCS.Properties.Resources.close_gray;
             this.TrayCloseButton.Name = "TrayCloseButton";
-            this.TrayCloseButton.Size = new System.Drawing.Size(180, 22);
+            this.TrayCloseButton.Size = new System.Drawing.Size(149, 22);
             this.TrayCloseButton.Text = "Закрыть";
             // 
             // TempLabel
@@ -263,7 +262,6 @@
             // 
             this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.SettingPanel.Controls.Add(this.LabelLocationS);
-            this.SettingPanel.Controls.Add(this.SettingsMessage);
             this.SettingPanel.Controls.Add(this.SettingsLocation);
             this.SettingPanel.Location = new System.Drawing.Point(0, 21);
             this.SettingPanel.Name = "SettingPanel";
@@ -281,17 +279,6 @@
             this.LabelLocationS.TabIndex = 1;
             this.LabelLocationS.Text = "Город, страна или регион:";
             this.LabelLocationS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SettingsMessage
-            // 
-            this.SettingsMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.SettingsMessage.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.SettingsMessage.Location = new System.Drawing.Point(12, 247);
-            this.SettingsMessage.Name = "SettingsMessage";
-            this.SettingsMessage.Size = new System.Drawing.Size(377, 23);
-            this.SettingsMessage.TabIndex = 2;
-            this.SettingsMessage.Text = "Настройки успешно сохранены!";
-            this.SettingsMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SettingsLocation
             // 
@@ -456,7 +443,6 @@
         private System.Windows.Forms.Button ReconnectButton;
         private System.Windows.Forms.Panel ErrorPanel;
         private System.Windows.Forms.Label LabelLocationS;
-        private System.Windows.Forms.Label SettingsMessage;
         private System.Windows.Forms.TextBox SettingsLocation;
         private System.Windows.Forms.Label DescriptionPic;
     }

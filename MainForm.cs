@@ -38,6 +38,7 @@ namespace WeatherCS
                     LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
                     e.SuppressKeyPress = true;
                     LocationInput.Text = GetRegistry("location");
+                    LocationInput.SelectAll();
                     LocationInput.Focus();
                 }
             };
@@ -64,7 +65,6 @@ namespace WeatherCS
             {
                 SettingPanel.Visible = !SettingPanel.Visible;
                 SettingButton.BackColor = SettingPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
-                SettingsMessage.Visible = false;
             };
 
             Tray.MouseClick += (s, e) =>
@@ -106,7 +106,6 @@ namespace WeatherCS
                 }
             };
 
-            SettingsLocation.KeyDown += (s, e) => { UpdateLocation(s, e); };
             SettingsLocation.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
 
             ReconnectButton.Click += (s, e) =>
@@ -139,6 +138,7 @@ namespace WeatherCS
 
             if (location.Success)
             {
+                RegistryApp("api", "4b7f29a8e15af3ec8d463f83ce5dd419");
                 RegistryApp("location", location.City);
                 GetWeather();
             }
@@ -148,11 +148,12 @@ namespace WeatherCS
             }
         }
 
-        async void GetWeather(string newCity = "")
+        void GetWeather(string newCity = "")
         {
+            string key = GetRegistry("api");
             string query = newCity != "" ? newCity : GetRegistry("location");
 
-            string openweathermap = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid=4b7f29a8e15af3ec8d463f83ce5dd419";
+            string openweathermap = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}";
             var w = API.GetJSON<API.Root>(openweathermap);
 
             if (w.Cod.Equals("200"))
@@ -183,22 +184,6 @@ namespace WeatherCS
 
                 WeatherStatus(w.Weather);
                 ErrorHandler();
-
-                // animation for SettingsMessage
-                if (query != "")
-                {
-                    // 0, 202, 40 Green
-                    // 227, 227, 227 ControlLight
-                    SettingsMessage.Visible = true;
-
-                    for (byte r = 227, g = 227, b = 227; r >= 0 & g >= 202 & b >= 40; r -= 22, g -= 2, b -= 18, await Task.Delay(30))
-                        SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
-                    SettingsMessage.ForeColor = Color.FromArgb(0, 202, 40);
-                    await Task.Delay(1000);
-                    for (byte r = 0, g = 202, b = 40; r <= 227 & g <= 227 & b <= 227; r += 22, g += 2, b += 18, await Task.Delay(30))
-                        SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
-                    SettingsMessage.ForeColor = Color.FromArgb(227, 227, 227);
-                }
             }
             else if (w.Cod.Equals("404"))
             {
@@ -207,7 +192,7 @@ namespace WeatherCS
             }
             else if (w.Cod.Equals("401"))
             {
-                ErrorHandler("Требуется ключ авторизация для OpenWeatherMap");
+                ErrorHandler("Недействительный ключ авторизации");
             }
             else
             {
@@ -243,6 +228,7 @@ namespace WeatherCS
                 ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
                 DescriptionErrorLabel.Text = error;
+                FadeInApp();
             }
             else
             {
