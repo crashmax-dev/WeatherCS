@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 // Install-Package Newtonsoft.Json
 using Newtonsoft.Json.Linq;
 
@@ -19,8 +20,6 @@ namespace WeatherCS
 
         static JObject w;
         static readonly HttpClient client = new HttpClient();
-
-        string city;
         bool fadeIn = true;
 
         public MainForm()
@@ -39,7 +38,6 @@ namespace WeatherCS
                 }
             }
             else { Opacity = 0.95; }
-
             fadeIn = false;
         }
 
@@ -49,22 +47,20 @@ namespace WeatherCS
             {
                 HttpResponseMessage geo = await client.GetAsync("https://ipwhois.app/json/?objects=city&lang=ru");
 
-                if (geo.StatusCode.ToString() == "OK")
+                if (geo.IsSuccessStatusCode)
                 {
                     JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
-                    city = (string)r["city"];
+                    RegistryApp("location", (string)r["city"]);
                     GetWeather();
                 }
                 else
                 {
-                    ErrorHandler("Ошибка определения вашей геолокации.");
-                    FadeInApp();
+                    ErrorHandler("Ошибка определения вашей геолокации");
                 }
             }
             catch (HttpRequestException e)
             {
                 ErrorHandler(e.Message);
-                FadeInApp();
             }
         }
 
@@ -72,22 +68,28 @@ namespace WeatherCS
         {
             try
             {
-                string query = newCity == "" ? city : newCity;
+                string query = newCity == "" ? GetRegistry("location") : newCity;
                 string api = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid=4b7f29a8e15af3ec8d463f83ce5dd419";
+                
                 HttpResponseMessage response = await client.GetAsync(api);
                 Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync());
                 w = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-                if (response.StatusCode.ToString() == "OK")
-                {
-                    city = query;
+                bool IsSuccess = response.IsSuccessStatusCode;
+                string StatusCode = response.StatusCode.ToString();
 
-                    // strings
+                if (IsSuccess && StatusCode == "OK")
+                {
+                    SetRegistry("location", query);
+
                     string temp = $"{Math.Round((double)w["main"]["temp"], 1)}°C";
-                    string humidity = $"Влажность: {(string)w["main"]["humidity"]}%";
-                    string pressure = $"Давление: {Math.Round((double)w["main"]["pressure"] * 0.75, 1)}mmHg";
                     string clouds = $"Облачность: {(string)w["clouds"]["all"]}%";
+                    string humidity = $"Влажность: {(string)w["main"]["humidity"]}%";
                     string wind = $"Ветер: {(string)w["wind"]["speed"]}m/sec";
+
+                    // convert hPa to mmHg
+                    string pressure = $"Давление: {Math.Round((double)w["main"]["pressure"] * 0.75, 1)}mmHg";
+
                     string loc = (string)w["name"];
                     string title = $"{loc} — {temp}";
 
@@ -100,19 +102,40 @@ namespace WeatherCS
                     WindLabel.Text = wind;
                     PressureLabel.Text = pressure;
                     LocationInput.Text = loc;
+                    LocationInputS.Text = loc;
 
                     WeatherStatus();
                     ErrorHandler();
+
+                    // animation for SettingsMessage
+                    if(query != "")
+                    {
+                        // 0, 202, 40 Green
+                        // 227, 227, 227 ControlLight
+                        SettingsMessage.Visible = true;
+
+                        for (byte r = 227, g = 227, b = 227; r >= 0 & g >= 202 & b >= 40; r -= 22, g -= 2, b -= 18, await Task.Delay(30))
+                            SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
+                        SettingsMessage.ForeColor = Color.FromArgb(0, 202, 40);
+                        await Task.Delay(1000);
+                        for (byte r = 0, g = 202, b = 40; r <= 227 & g <= 227 & b <= 227; r += 22, g += 2, b += 18, await Task.Delay(30))
+                            SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
+                        SettingsMessage.ForeColor = Color.FromArgb(227, 227, 227);
+                    }
                 }
-                else
+                else if(StatusCode == "NotFound")
                 {
                     LocMessage.ForeColor = Color.Firebrick;
-                    LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc.";
+                    LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc";
+                }
+                else if(StatusCode == "Unauthorized")
+                {
+                    ErrorHandler("Требуется ключ авторизация для OpenWeatherMap");
                 }
             }
             catch
             {
-                ErrorHandler("Ошибка получения данных с OpenWeatherMap.");
+                ErrorHandler("Ошибка доступа к OpenWeatherMap");
             }
             finally
             {
@@ -143,20 +166,16 @@ namespace WeatherCS
                 // 64 ???
                 Tray.Text = error;
 
-                ReloadPage.Visible = true;
-                GlobePic.Visible = true;
-                ReconnectButton.Visible = true;
+                ErrorPanel.Visible = true;
                 ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
-                ErrorLabel.Visible = true;
-                ErrorLabel.Text = error;
+                DescriptionErrorLabel.Text = error;
+
+                FadeInApp();
             }
             else
             {
-                ReloadPage.Visible = false;
-                GlobePic.Visible = false;
-                ReconnectButton.Visible = false;
-                ErrorLabel.Visible = false;
+                ErrorPanel.Visible = false;
 
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
@@ -165,9 +184,31 @@ namespace WeatherCS
             }
         }
 
+        private void RegistryApp(string key, string value)
+        {
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+                if (reg.GetValue(key) == null)
+                    reg.SetValue(key, value);
+        }
+
+        private static string GetRegistry(string key)
+        {
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+                if (reg.GetValue(key) != null)
+                    return reg.GetValue(key).ToString();
+                else
+                    return "";
+        }
+
+        private void SetRegistry(string key, string value)
+        {
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+                reg.SetValue(key, value);
+        }
+
         private void FormMove(object sender, MouseEventArgs e)
         {
-            CustomPanel.Capture = false;
+            TitleBar.Capture = false;
             Message m = Message.Create(Handle, 161, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
         }
@@ -231,6 +272,16 @@ namespace WeatherCS
             }
         }
 
+        private void UpdateLocationS(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ActiveControl = null;
+                e.SuppressKeyPress = true;
+                GetWeather(LocationInputS.Text);
+            }
+        }
+
         private void EscEvent(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -238,8 +289,48 @@ namespace WeatherCS
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
                 e.SuppressKeyPress = true;
-                LocationInput.Text = city;
+                LocationInput.Text = GetRegistry("location");
                 LocationInput.Focus();
+            }
+        }
+
+        private void RegExpLocationInput(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) &&
+                !char.IsLetter(e.KeyChar) &&
+                (e.KeyChar != ' ' && e.KeyChar != '-'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void OpenSettings(object sender, EventArgs e)
+        {
+            SettingPanel.Visible = SettingPanel.Visible ? false : true;
+            SettingButton.BackColor = SettingPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
+            SettingsMessage.Visible = false;
+        }
+
+        private void LabelFontSize(object sender, EventArgs e)
+        {
+            int i = LocationInput.TextLength;
+
+            if (i >= 25)
+            {
+                LocationInput.Font = new Font("Segoe UI Semibold", 16.75F);
+                LocationInput.Location = new Point(11, 15);
+            } else if(i >= 20)
+            {
+                LocationInput.Location = new Point(11, 10);
+                LocationInput.Font = new Font("Segoe UI Semibold", 18.75F);
+            } else if(i >= 15)
+            {
+                LocationInput.Location = new Point(11, 6);
+                LocationInput.Font = new Font("Segoe UI Semibold", 20.75F);
+            } else
+            {
+                LocationInput.Location = new Point(11, 3);
+                LocationInput.Font = new Font("Segoe UI Semibold", 27.75F);
             }
         }
     }

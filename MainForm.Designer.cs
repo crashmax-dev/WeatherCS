@@ -30,51 +30,48 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.CustomPanel = new System.Windows.Forms.Label();
             this.WeatherIco = new System.Windows.Forms.PictureBox();
             this.Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.MenuTray = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ReconnectButton = new System.Windows.Forms.Button();
-            this.ReloadPage = new System.Windows.Forms.Label();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TempLabel = new System.Windows.Forms.Label();
             this.CloudsLabel = new System.Windows.Forms.Label();
             this.HumidityLabel = new System.Windows.Forms.Label();
             this.WindLabel = new System.Windows.Forms.Label();
             this.PressureLabel = new System.Windows.Forms.Label();
-            this.ErrorLabel = new System.Windows.Forms.Label();
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
             this.AboutButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
             this.MinButton = new System.Windows.Forms.Button();
-            this.GlobePic = new System.Windows.Forms.PictureBox();
             this.CloseButton = new System.Windows.Forms.Button();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingPanel = new System.Windows.Forms.Panel();
+            this.LabelLocationS = new System.Windows.Forms.Label();
+            this.SettingsMessage = new System.Windows.Forms.Label();
+            this.LocationInputS = new System.Windows.Forms.TextBox();
+            this.Main = new System.Windows.Forms.Panel();
+            this.TitleBar = new System.Windows.Forms.Label();
+            this.ErrGlobePic = new System.Windows.Forms.PictureBox();
+            this.DescriptionErrorLabel = new System.Windows.Forms.Label();
+            this.ReconnectButton = new System.Windows.Forms.Button();
+            this.ErrorPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.MenuTray.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.GlobePic)).BeginInit();
+            this.SettingPanel.SuspendLayout();
+            this.Main.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrGlobePic)).BeginInit();
+            this.ErrorPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // CustomPanel
-            // 
-            this.CustomPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.CustomPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CustomPanel.Location = new System.Drawing.Point(0, 0);
-            this.CustomPanel.Name = "CustomPanel";
-            this.CustomPanel.Size = new System.Drawing.Size(400, 21);
-            this.CustomPanel.TabIndex = 4;
-            this.CustomPanel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.CustomPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMove);
             // 
             // WeatherIco
             // 
             this.WeatherIco.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.WeatherIco.ErrorImage = null;
             this.WeatherIco.InitialImage = null;
-            this.WeatherIco.Location = new System.Drawing.Point(0, 55);
+            this.WeatherIco.Location = new System.Drawing.Point(0, 34);
             this.WeatherIco.Name = "WeatherIco";
             this.WeatherIco.Size = new System.Drawing.Size(200, 200);
             this.WeatherIco.TabIndex = 6;
@@ -101,39 +98,42 @@
             this.MenuTray.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.MenuTray.Size = new System.Drawing.Size(150, 76);
             // 
-            // ReconnectButton
+            // aboutToolStripMenuItem
             // 
-            this.ReconnectButton.AutoSize = true;
-            this.ReconnectButton.FlatAppearance.BorderSize = 0;
-            this.ReconnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ReconnectButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReconnectButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ReconnectButton.Location = new System.Drawing.Point(150, 254);
-            this.ReconnectButton.Name = "ReconnectButton";
-            this.ReconnectButton.Size = new System.Drawing.Size(100, 23);
-            this.ReconnectButton.TabIndex = 0;
-            this.ReconnectButton.TabStop = false;
-            this.ReconnectButton.UseVisualStyleBackColor = false;
-            this.ReconnectButton.Visible = false;
-            this.ReconnectButton.Click += new System.EventHandler(this.Reconnect);
+            this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.aboutToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.about_gray;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.aboutToolStripMenuItem.Text = "О программе";
             // 
-            // ReloadPage
+            // settingToolStripMenuItem
             // 
-            this.ReloadPage.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ReloadPage.Font = new System.Drawing.Font("Segoe UI Semilight", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ReloadPage.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ReloadPage.Location = new System.Drawing.Point(0, 21);
-            this.ReloadPage.Name = "ReloadPage";
-            this.ReloadPage.Size = new System.Drawing.Size(400, 279);
-            this.ReloadPage.TabIndex = 8;
-            this.ReloadPage.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.ReloadPage.Visible = false;
+            this.settingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.settingToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.setting_gray;
+            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.settingToolStripMenuItem.Text = "Настройки";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(146, 6);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.closeToolStripMenuItem.Text = "Закрыть";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
             // 
             // TempLabel
             // 
             this.TempLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 36.25F, System.Drawing.FontStyle.Bold);
             this.TempLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.TempLabel.Location = new System.Drawing.Point(200, 85);
+            this.TempLabel.Location = new System.Drawing.Point(200, 64);
             this.TempLabel.Name = "TempLabel";
             this.TempLabel.Size = new System.Drawing.Size(200, 136);
             this.TempLabel.TabIndex = 12;
@@ -143,7 +143,7 @@
             // 
             this.CloudsLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.CloudsLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.CloudsLabel.Location = new System.Drawing.Point(0, 237);
+            this.CloudsLabel.Location = new System.Drawing.Point(0, 216);
             this.CloudsLabel.Name = "CloudsLabel";
             this.CloudsLabel.Size = new System.Drawing.Size(200, 21);
             this.CloudsLabel.TabIndex = 13;
@@ -153,7 +153,7 @@
             // 
             this.HumidityLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.HumidityLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.HumidityLabel.Location = new System.Drawing.Point(0, 258);
+            this.HumidityLabel.Location = new System.Drawing.Point(0, 237);
             this.HumidityLabel.Name = "HumidityLabel";
             this.HumidityLabel.Size = new System.Drawing.Size(200, 21);
             this.HumidityLabel.TabIndex = 15;
@@ -163,7 +163,7 @@
             // 
             this.WindLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.WindLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.WindLabel.Location = new System.Drawing.Point(200, 237);
+            this.WindLabel.Location = new System.Drawing.Point(200, 216);
             this.WindLabel.Name = "WindLabel";
             this.WindLabel.Size = new System.Drawing.Size(200, 21);
             this.WindLabel.TabIndex = 16;
@@ -173,22 +173,11 @@
             // 
             this.PressureLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.PressureLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.PressureLabel.Location = new System.Drawing.Point(200, 258);
+            this.PressureLabel.Location = new System.Drawing.Point(200, 237);
             this.PressureLabel.Name = "PressureLabel";
             this.PressureLabel.Size = new System.Drawing.Size(200, 21);
             this.PressureLabel.TabIndex = 17;
             this.PressureLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // ErrorLabel
-            // 
-            this.ErrorLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ErrorLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ErrorLabel.Location = new System.Drawing.Point(0, 204);
-            this.ErrorLabel.Name = "ErrorLabel";
-            this.ErrorLabel.Size = new System.Drawing.Size(400, 34);
-            this.ErrorLabel.TabIndex = 18;
-            this.ErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ErrorLabel.Visible = false;
             // 
             // LocationInput
             // 
@@ -196,20 +185,22 @@
             this.LocationInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LocationInput.Font = new System.Drawing.Font("Segoe UI Semibold", 27.75F);
             this.LocationInput.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LocationInput.Location = new System.Drawing.Point(11, 24);
+            this.LocationInput.Location = new System.Drawing.Point(11, 3);
             this.LocationInput.MaxLength = 64;
             this.LocationInput.Name = "LocationInput";
             this.LocationInput.Size = new System.Drawing.Size(379, 50);
             this.LocationInput.TabIndex = 19;
             this.LocationInput.TabStop = false;
             this.LocationInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.LocationInput.TextChanged += new System.EventHandler(this.LabelFontSize);
             this.LocationInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UpdateLocation);
+            this.LocationInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RegExpLocationInput);
             // 
             // LocMessage
             // 
             this.LocMessage.Font = new System.Drawing.Font("Segoe UI Semilight", 8.75F);
             this.LocMessage.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LocMessage.Location = new System.Drawing.Point(0, 72);
+            this.LocMessage.Location = new System.Drawing.Point(0, 51);
             this.LocMessage.Name = "LocMessage";
             this.LocMessage.Size = new System.Drawing.Size(400, 23);
             this.LocMessage.TabIndex = 20;
@@ -242,6 +233,7 @@
             this.SettingButton.TabIndex = 21;
             this.SettingButton.TabStop = false;
             this.SettingButton.UseVisualStyleBackColor = false;
+            this.SettingButton.Click += new System.EventHandler(this.OpenSettings);
             // 
             // MinButton
             // 
@@ -257,19 +249,6 @@
             this.MinButton.TabStop = false;
             this.MinButton.UseVisualStyleBackColor = false;
             this.MinButton.Click += new System.EventHandler(this.MinApp);
-            // 
-            // GlobePic
-            // 
-            this.GlobePic.ErrorImage = null;
-            this.GlobePic.Image = global::WeatherCS.Properties.Resources.www;
-            this.GlobePic.InitialImage = null;
-            this.GlobePic.Location = new System.Drawing.Point(100, 21);
-            this.GlobePic.Name = "GlobePic";
-            this.GlobePic.Size = new System.Drawing.Size(200, 200);
-            this.GlobePic.TabIndex = 9;
-            this.GlobePic.TabStop = false;
-            this.GlobePic.Visible = false;
-            this.GlobePic.WaitOnLoad = true;
             // 
             // CloseButton
             // 
@@ -288,36 +267,130 @@
             this.CloseButton.MouseLeave += new System.EventHandler(this.CloseButtonLeave);
             this.CloseButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CloseButtonHover);
             // 
-            // closeToolStripMenuItem
+            // SettingPanel
             // 
-            this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.closeToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.close_gray;
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.closeToolStripMenuItem.Text = "Закрыть";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseApp);
+            this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingPanel.Controls.Add(this.LabelLocationS);
+            this.SettingPanel.Controls.Add(this.SettingsMessage);
+            this.SettingPanel.Controls.Add(this.LocationInputS);
+            this.SettingPanel.Location = new System.Drawing.Point(0, 21);
+            this.SettingPanel.Name = "SettingPanel";
+            this.SettingPanel.Size = new System.Drawing.Size(400, 279);
+            this.SettingPanel.TabIndex = 24;
+            this.SettingPanel.Visible = false;
             // 
-            // settingToolStripMenuItem
+            // LabelLocationS
             // 
-            this.settingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.settingToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.setting_gray;
-            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.settingToolStripMenuItem.Text = "Настройки";
+            this.LabelLocationS.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
+            this.LabelLocationS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LabelLocationS.Location = new System.Drawing.Point(11, 6);
+            this.LabelLocationS.Name = "LabelLocationS";
+            this.LabelLocationS.Size = new System.Drawing.Size(379, 19);
+            this.LabelLocationS.TabIndex = 1;
+            this.LabelLocationS.Text = "Город, страна или регион:";
+            this.LabelLocationS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // toolStripSeparator1
+            // SettingsMessage
             // 
-            this.toolStripSeparator1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(146, 6);
+            this.SettingsMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
+            this.SettingsMessage.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsMessage.Location = new System.Drawing.Point(12, 247);
+            this.SettingsMessage.Name = "SettingsMessage";
+            this.SettingsMessage.Size = new System.Drawing.Size(377, 23);
+            this.SettingsMessage.TabIndex = 2;
+            this.SettingsMessage.Text = "Настройки успешно сохранены!";
+            this.SettingsMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // aboutToolStripMenuItem
+            // LocationInputS
             // 
-            this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.aboutToolStripMenuItem.Image = global::WeatherCS.Properties.Resources.about_gray;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.aboutToolStripMenuItem.Text = "О программе";
+            this.LocationInputS.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LocationInputS.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.LocationInputS.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
+            this.LocationInputS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LocationInputS.Location = new System.Drawing.Point(11, 23);
+            this.LocationInputS.MaxLength = 64;
+            this.LocationInputS.Name = "LocationInputS";
+            this.LocationInputS.Size = new System.Drawing.Size(379, 30);
+            this.LocationInputS.TabIndex = 0;
+            this.LocationInputS.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.LocationInputS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UpdateLocationS);
+            this.LocationInputS.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RegExpLocationInput);
+            // 
+            // Main
+            // 
+            this.Main.Controls.Add(this.LocationInput);
+            this.Main.Controls.Add(this.LocMessage);
+            this.Main.Controls.Add(this.WindLabel);
+            this.Main.Controls.Add(this.PressureLabel);
+            this.Main.Controls.Add(this.HumidityLabel);
+            this.Main.Controls.Add(this.CloudsLabel);
+            this.Main.Controls.Add(this.TempLabel);
+            this.Main.Controls.Add(this.WeatherIco);
+            this.Main.Location = new System.Drawing.Point(0, 21);
+            this.Main.Name = "Main";
+            this.Main.Size = new System.Drawing.Size(400, 279);
+            this.Main.TabIndex = 25;
+            // 
+            // TitleBar
+            // 
+            this.TitleBar.BackColor = System.Drawing.SystemColors.Control;
+            this.TitleBar.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar.Name = "TitleBar";
+            this.TitleBar.Size = new System.Drawing.Size(400, 21);
+            this.TitleBar.TabIndex = 21;
+            this.TitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMove);
+            // 
+            // ErrGlobePic
+            // 
+            this.ErrGlobePic.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ErrGlobePic.ErrorImage = null;
+            this.ErrGlobePic.Image = global::WeatherCS.Properties.Resources.www;
+            this.ErrGlobePic.InitialImage = null;
+            this.ErrGlobePic.Location = new System.Drawing.Point(100, 0);
+            this.ErrGlobePic.Name = "ErrGlobePic";
+            this.ErrGlobePic.Size = new System.Drawing.Size(200, 200);
+            this.ErrGlobePic.TabIndex = 9;
+            this.ErrGlobePic.TabStop = false;
+            this.ErrGlobePic.WaitOnLoad = true;
+            // 
+            // DescriptionErrorLabel
+            // 
+            this.DescriptionErrorLabel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.DescriptionErrorLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DescriptionErrorLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.DescriptionErrorLabel.Location = new System.Drawing.Point(0, 183);
+            this.DescriptionErrorLabel.Name = "DescriptionErrorLabel";
+            this.DescriptionErrorLabel.Size = new System.Drawing.Size(400, 34);
+            this.DescriptionErrorLabel.TabIndex = 18;
+            this.DescriptionErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ReconnectButton
+            // 
+            this.ReconnectButton.AutoSize = true;
+            this.ReconnectButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ReconnectButton.FlatAppearance.BorderSize = 0;
+            this.ReconnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReconnectButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReconnectButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ReconnectButton.Location = new System.Drawing.Point(150, 237);
+            this.ReconnectButton.Name = "ReconnectButton";
+            this.ReconnectButton.Size = new System.Drawing.Size(100, 23);
+            this.ReconnectButton.TabIndex = 0;
+            this.ReconnectButton.TabStop = false;
+            this.ReconnectButton.UseVisualStyleBackColor = false;
+            this.ReconnectButton.Click += new System.EventHandler(this.Reconnect);
+            // 
+            // ErrorPanel
+            // 
+            this.ErrorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ErrorPanel.Controls.Add(this.ReconnectButton);
+            this.ErrorPanel.Controls.Add(this.DescriptionErrorLabel);
+            this.ErrorPanel.Controls.Add(this.ErrGlobePic);
+            this.ErrorPanel.Location = new System.Drawing.Point(0, 21);
+            this.ErrorPanel.Name = "ErrorPanel";
+            this.ErrorPanel.Size = new System.Drawing.Size(400, 279);
+            this.ErrorPanel.TabIndex = 0;
+            this.ErrorPanel.Visible = false;
             // 
             // MainForm
             // 
@@ -325,28 +398,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(400, 300);
-            this.Controls.Add(this.AboutButton);
-            this.Controls.Add(this.SettingButton);
-            this.Controls.Add(this.ReconnectButton);
-            this.Controls.Add(this.ErrorLabel);
-            this.Controls.Add(this.MinButton);
-            this.Controls.Add(this.GlobePic);
             this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.CustomPanel);
-            this.Controls.Add(this.ReloadPage);
-            this.Controls.Add(this.LocationInput);
-            this.Controls.Add(this.LocMessage);
-            this.Controls.Add(this.WindLabel);
-            this.Controls.Add(this.PressureLabel);
-            this.Controls.Add(this.HumidityLabel);
-            this.Controls.Add(this.CloudsLabel);
-            this.Controls.Add(this.WeatherIco);
-            this.Controls.Add(this.TempLabel);
+            this.Controls.Add(this.MinButton);
+            this.Controls.Add(this.SettingButton);
+            this.Controls.Add(this.AboutButton);
+            this.Controls.Add(this.TitleBar);
+            this.Controls.Add(this.SettingPanel);
+            this.Controls.Add(this.ErrorPanel);
+            this.Controls.Add(this.Main);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(400, 300);
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -355,9 +420,14 @@
             this.Resize += new System.EventHandler(this.ToTray);
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).EndInit();
             this.MenuTray.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.GlobePic)).EndInit();
+            this.SettingPanel.ResumeLayout(false);
+            this.SettingPanel.PerformLayout();
+            this.Main.ResumeLayout(false);
+            this.Main.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrGlobePic)).EndInit();
+            this.ErrorPanel.ResumeLayout(false);
+            this.ErrorPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -365,20 +435,15 @@
 
         private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.Button MinButton;
-        private System.Windows.Forms.Label CustomPanel;
         private System.Windows.Forms.PictureBox WeatherIco;
         private System.Windows.Forms.NotifyIcon Tray;
         private System.Windows.Forms.ContextMenuStrip MenuTray;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.PictureBox GlobePic;
-        private System.Windows.Forms.Button ReconnectButton;
-        private System.Windows.Forms.Label ReloadPage;
         private System.Windows.Forms.Label TempLabel;
         private System.Windows.Forms.Label CloudsLabel;
         private System.Windows.Forms.Label HumidityLabel;
         private System.Windows.Forms.Label WindLabel;
         private System.Windows.Forms.Label PressureLabel;
-        private System.Windows.Forms.Label ErrorLabel;
         private System.Windows.Forms.TextBox LocationInput;
         private System.Windows.Forms.Label LocMessage;
         private System.Windows.Forms.Button SettingButton;
@@ -386,5 +451,15 @@
         private System.Windows.Forms.ToolStripMenuItem settingToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Panel SettingPanel;
+        private System.Windows.Forms.Panel Main;
+        private System.Windows.Forms.Label TitleBar;
+        private System.Windows.Forms.PictureBox ErrGlobePic;
+        private System.Windows.Forms.Label DescriptionErrorLabel;
+        private System.Windows.Forms.Button ReconnectButton;
+        private System.Windows.Forms.Panel ErrorPanel;
+        private System.Windows.Forms.Label LabelLocationS;
+        private System.Windows.Forms.Label SettingsMessage;
+        private System.Windows.Forms.TextBox LocationInputS;
     }
 }
