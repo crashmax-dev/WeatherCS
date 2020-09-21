@@ -149,13 +149,13 @@ namespace WeatherCS
             {
                 foreach (var i in w["weather"])
                 {
-                    DescriptionPic.Text = (string)i["description"];
+                    DescriptionPic.Text = FirstLetterToUpper((string)i["description"]);
                     WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", i["icon"]);
                     await Task.Delay(5000);
                 }
             } else
             {
-                DescriptionPic.Text = (string)w["weather"][0]["description"];
+                DescriptionPic.Text = FirstLetterToUpper((string)w["weather"][0]["description"]);
                 WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w["weather"][0]["icon"]);
             }
         }
@@ -184,6 +184,11 @@ namespace WeatherCS
                 await Task.Delay(60000);
                 GetWeather();
             }
+        }
+
+        public string FirstLetterToUpper(string str)
+        {
+            return Char.ToUpper(str[0]) + str.Substring(1);
         }
 
         private void RegistryApp(string key, string value)

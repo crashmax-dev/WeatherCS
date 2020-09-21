@@ -415,9 +415,9 @@
             this.Controls.Add(this.SettingButton);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.TitleBar);
-            this.Controls.Add(this.Main);
             this.Controls.Add(this.SettingPanel);
             this.Controls.Add(this.ErrorPanel);
+            this.Controls.Add(this.Main);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
