@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Win32;
-// Install-Package Newtonsoft.Json
-using Newtonsoft.Json.Linq;
 
 namespace WeatherCS
 {
@@ -18,8 +14,6 @@ namespace WeatherCS
             get { CreateParams cp = base.CreateParams; cp.ClassStyle = 0x20000; return cp; }
         }
 
-        static JObject w;
-        static readonly HttpClient client = new HttpClient();
         bool fadeIn = true;
 
         public MainForm()
@@ -83,7 +77,7 @@ namespace WeatherCS
                 }
             };
             TrayCloseButton.Click += (s, e) => { Close(); };
-            
+
             LocationInput.KeyDown += (s, e) => { UpdateLocation(s, e); };
             LocationInput.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
             LocationInput.TextChanged += (s, e) =>
@@ -138,123 +132,103 @@ namespace WeatherCS
             fadeIn = false;
         }
 
-        async void InitializeApp()
+        void InitializeApp()
         {
-            try
-            {
-                HttpResponseMessage geo = await client.GetAsync("https://ipwhois.app/json/?objects=city&lang=ru");
+            string ipwhois = "https://ipwhois.app/json/?objects=success,city&lang=ru";
+            var location = API.GetJSON<API.Geo>(ipwhois);
 
-                if (geo.IsSuccessStatusCode)
-                {
-                    JObject r = JObject.Parse(await geo.Content.ReadAsStringAsync());
-                    RegistryApp("location", (string)r["city"]);
-                    GetWeather();
-                }
-                else
-                {
-                    ErrorHandler("Ошибка определения вашей геолокации");
-                }
-            }
-            catch (HttpRequestException e)
+            if (location.Success)
             {
-                ErrorHandler(e.Message);
+                RegistryApp("location", location.City);
+                GetWeather();
+            }
+            else
+            {
+                ErrorHandler("Ошибка интернет соединения");
             }
         }
 
         async void GetWeather(string newCity = "")
         {
-            try
+            string query = newCity != "" ? newCity : GetRegistry("location");
+
+            string openweathermap = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid=4b7f29a8e15af3ec8d463f83ce5dd419";
+            var w = API.GetJSON<API.Root>(openweathermap);
+
+            if (w.Cod.Equals("200"))
             {
-                string query = newCity == "" ? GetRegistry("location") : newCity;
-                string api = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid=4b7f29a8e15af3ec8d463f83ce5dd419";
-                
-                HttpResponseMessage response = await client.GetAsync(api);
-                Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync());
-                w = JObject.Parse(await response.Content.ReadAsStringAsync());
+                SetRegistry("location", query);
 
-                bool IsSuccess = response.IsSuccessStatusCode;
-                string StatusCode = response.StatusCode.ToString();
+                string temp = $"{Math.Round(w.Main.Temp, 1)}°C";
+                string clouds = $"Облачность: {w.Clouds.All}%";
+                string humidity = $"Влажность: {w.Main.Humidity}%";
+                string wind = $"Ветер: {w.Wind.Speed}m/sec";
 
-                if (IsSuccess && StatusCode == "OK")
+                // convert hPa to mmHg
+                string pressure = $"Давление: {Math.Round(w.Main.Pressure * 0.75, 1)}mmHg";
+
+                string loc = w.Name;
+                string title = $"{loc} — {temp}";
+
+                // labels
+                Text = title;
+                Tray.Text = title;
+                TempLabel.Text = temp;
+                CloudsLabel.Text = clouds;
+                HumidityLabel.Text = humidity;
+                WindLabel.Text = wind;
+                PressureLabel.Text = pressure;
+                LocationInput.Text = loc;
+                SettingsLocation.Text = loc;
+
+                WeatherStatus(w.Weather);
+                ErrorHandler();
+
+                // animation for SettingsMessage
+                if (query != "")
                 {
-                    SetRegistry("location", query);
+                    // 0, 202, 40 Green
+                    // 227, 227, 227 ControlLight
+                    SettingsMessage.Visible = true;
 
-                    string temp = $"{Math.Round((double)w["main"]["temp"], 1)}°C";
-                    string clouds = $"Облачность: {(string)w["clouds"]["all"]}%";
-                    string humidity = $"Влажность: {(string)w["main"]["humidity"]}%";
-                    string wind = $"Ветер: {(string)w["wind"]["speed"]}m/sec";
-
-                    // convert hPa to mmHg
-                    string pressure = $"Давление: {Math.Round((double)w["main"]["pressure"] * 0.75, 1)}mmHg";
-
-                    string loc = (string)w["name"];
-                    string title = $"{loc} — {temp}";
-
-                    // labels
-                    Text = title;
-                    Tray.Text = title;
-                    TempLabel.Text = temp;
-                    CloudsLabel.Text = clouds;
-                    HumidityLabel.Text = humidity;
-                    WindLabel.Text = wind;
-                    PressureLabel.Text = pressure;
-                    LocationInput.Text = loc;
-                    SettingsLocation.Text = loc;
-
-                    WeatherStatus();
-                    ErrorHandler();
-
-                    // animation for SettingsMessage
-                    if(query != "")
-                    {
-                        // 0, 202, 40 Green
-                        // 227, 227, 227 ControlLight
-                        SettingsMessage.Visible = true;
-
-                        for (byte r = 227, g = 227, b = 227; r >= 0 & g >= 202 & b >= 40; r -= 22, g -= 2, b -= 18, await Task.Delay(30))
-                            SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
-                        SettingsMessage.ForeColor = Color.FromArgb(0, 202, 40);
-                        await Task.Delay(1000);
-                        for (byte r = 0, g = 202, b = 40; r <= 227 & g <= 227 & b <= 227; r += 22, g += 2, b += 18, await Task.Delay(30))
-                            SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
-                        SettingsMessage.ForeColor = Color.FromArgb(227, 227, 227);
-                    }
-                }
-                else if(StatusCode == "NotFound")
-                {
-                    LocMessage.ForeColor = Color.Firebrick;
-                    LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc";
-                }
-                else if(StatusCode == "Unauthorized")
-                {
-                    ErrorHandler("Требуется ключ авторизация для OpenWeatherMap");
+                    for (byte r = 227, g = 227, b = 227; r >= 0 & g >= 202 & b >= 40; r -= 22, g -= 2, b -= 18, await Task.Delay(30))
+                        SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
+                    SettingsMessage.ForeColor = Color.FromArgb(0, 202, 40);
+                    await Task.Delay(1000);
+                    for (byte r = 0, g = 202, b = 40; r <= 227 & g <= 227 & b <= 227; r += 22, g += 2, b += 18, await Task.Delay(30))
+                        SettingsMessage.ForeColor = Color.FromArgb(r, g, b);
+                    SettingsMessage.ForeColor = Color.FromArgb(227, 227, 227);
                 }
             }
-            catch
+            else if (w.Cod.Equals("404"))
+            {
+                LocMessage.ForeColor = Color.Firebrick;
+                LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc";
+            }
+            else if (w.Cod.Equals("401"))
+            {
+                ErrorHandler("Требуется ключ авторизация для OpenWeatherMap");
+            }
+            else
             {
                 ErrorHandler("Ошибка доступа к OpenWeatherMap");
             }
-            finally
-            {
-                FadeInApp();
-            }
         }
 
-        async void WeatherStatus()
+        async void WeatherStatus(List<API.Weather> w)
         {
-            if(w["weather"].Count() > 1)
+            while (w.Count < 0)
             {
-                foreach (var i in w["weather"])
+                foreach (var i in w)
                 {
-                    DescriptionPic.Text = FirstLetterToUpper((string)i["description"]);
-                    WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", i["icon"]);
+                    DescriptionPic.Text = FirstLetterToUpper(i.Description);
+                    WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", i.Icon);
                     await Task.Delay(5000);
                 }
-            } else
-            {
-                DescriptionPic.Text = FirstLetterToUpper((string)w["weather"][0]["description"]);
-                WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w["weather"][0]["icon"]);
             }
+
+            DescriptionPic.Text = FirstLetterToUpper(w[0].Description);
+            WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w[0].Icon);
         }
 
         async void ErrorHandler(string error = "")
@@ -269,8 +243,6 @@ namespace WeatherCS
                 ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
                 DescriptionErrorLabel.Text = error;
-
-                FadeInApp();
             }
             else
             {
@@ -278,6 +250,7 @@ namespace WeatherCS
 
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
+                FadeInApp();
                 await Task.Delay(60000);
                 GetWeather();
             }
