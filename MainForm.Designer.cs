@@ -59,6 +59,8 @@
             this.TraySettingsButton = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCloseButton = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutPanel = new System.Windows.Forms.Panel();
+            this.ApiKeyLabel = new System.Windows.Forms.Label();
+            this.SettingsApiKey = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
@@ -176,6 +178,8 @@
             // SettingPanel
             // 
             this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingPanel.Controls.Add(this.SettingsApiKey);
+            this.SettingPanel.Controls.Add(this.ApiKeyLabel);
             this.SettingPanel.Controls.Add(this.LabelLocationS);
             this.SettingPanel.Controls.Add(this.SettingsLocation);
             this.SettingPanel.Location = new System.Drawing.Point(0, 21);
@@ -386,6 +390,31 @@
             this.AboutPanel.TabIndex = 26;
             this.AboutPanel.Visible = false;
             // 
+            // ApiKeyLabel
+            // 
+            this.ApiKeyLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.ApiKeyLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ApiKeyLabel.Location = new System.Drawing.Point(11, 56);
+            this.ApiKeyLabel.Name = "ApiKeyLabel";
+            this.ApiKeyLabel.Size = new System.Drawing.Size(379, 19);
+            this.ApiKeyLabel.TabIndex = 2;
+            this.ApiKeyLabel.Text = "OpenWeatherMap API Ключ:";
+            this.ApiKeyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SettingsApiKey
+            // 
+            this.SettingsApiKey.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsApiKey.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsApiKey.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
+            this.SettingsApiKey.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsApiKey.Location = new System.Drawing.Point(12, 74);
+            this.SettingsApiKey.MaxLength = 64;
+            this.SettingsApiKey.Name = "SettingsApiKey";
+            this.SettingsApiKey.PasswordChar = '●';
+            this.SettingsApiKey.Size = new System.Drawing.Size(379, 30);
+            this.SettingsApiKey.TabIndex = 3;
+            this.SettingsApiKey.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,5 +484,7 @@
         private System.Windows.Forms.Label DescriptionPic;
         private System.Windows.Forms.ToolStripSeparator TraySeparator;
         private System.Windows.Forms.Panel AboutPanel;
+        private System.Windows.Forms.Label ApiKeyLabel;
+        private System.Windows.Forms.TextBox SettingsApiKey;
     }
 }

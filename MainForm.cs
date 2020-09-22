@@ -146,6 +146,14 @@ namespace WeatherCS
             };
 
             SettingsLocation.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
+            SettingsApiKey.Enter += (s, e) =>
+            {
+                SettingsApiKey.PasswordChar = '\0';
+            };
+            SettingsApiKey.Leave += (s, e) =>
+            {
+                SettingsApiKey.PasswordChar = '●';
+            };
 
             ReconnectButton.Click += (s, e) =>
             {
@@ -179,6 +187,7 @@ namespace WeatherCS
             {
                 AutoRun();
                 RegistryApp("api", API.Key);
+                RegistryApp("location", location.City);
                 GetWeather();
             }
             else
@@ -197,7 +206,7 @@ namespace WeatherCS
 
             if (w.Cod.Equals("200"))
             {
-                SetRegistry("key", key);
+                SetRegistry("api", key);
                 SetRegistry("location", query);
 
                 string temp = $"{Math.Round(w.Main.Temp, 1)}°C";
@@ -221,6 +230,7 @@ namespace WeatherCS
                 PressureLabel.Text = pressure;
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
+                SettingsApiKey.Text = GetRegistry("api");
 
                 WeatherStatus(w.Weather);
                 ErrorHandler();
@@ -242,7 +252,7 @@ namespace WeatherCS
 
         async void WeatherStatus(List<API.Weather> w)
         {
-            while (w.Count < 0)
+            if (w.Count > 0 && WindowState == FormWindowState.Normal)
             {
                 foreach (var i in w)
                 {
@@ -256,7 +266,7 @@ namespace WeatherCS
             WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w[0].Icon);
         }
 
-        public async void ErrorHandler(string error = "")
+        async void ErrorHandler(string error = "")
         {
             if (error != "")
             {

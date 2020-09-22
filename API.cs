@@ -4,7 +4,6 @@ using System.Text;
 // Install-Package Newtonsoft.Json
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Net.NetworkInformation;
 
 namespace WeatherCS
