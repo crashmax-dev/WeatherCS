@@ -73,6 +73,16 @@ namespace WeatherCS.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap about_white {
+            get {
+                object obj = ResourceManager.GetObject("about_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close_gray {
             get {
                 object obj = ResourceManager.GetObject("close_gray", resourceCulture);
@@ -106,6 +116,16 @@ namespace WeatherCS.Properties {
         internal static System.Drawing.Bitmap setting_gray {
             get {
                 object obj = ResourceManager.GetObject("setting_gray", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap setting_white {
+            get {
+                object obj = ResourceManager.GetObject("setting_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

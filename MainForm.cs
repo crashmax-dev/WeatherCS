@@ -32,7 +32,7 @@ namespace WeatherCS
             };
             KeyDown += (s, e) =>
             {
-                if (e.KeyCode == Keys.Escape)
+                if (e.KeyCode == Keys.Escape && !SettingPanel.Visible)
                 {
                     LocMessage.ForeColor = SystemColors.ControlDarkDark;
                     LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
@@ -63,8 +63,24 @@ namespace WeatherCS
             };
             SettingButton.Click += (s, e) =>
             {
+                if (AboutPanel.Visible)
+                {
+                    AboutPanel.Visible = false;
+                    AboutButton.BackColor = SystemColors.Control;
+                }
                 SettingPanel.Visible = !SettingPanel.Visible;
                 SettingButton.BackColor = SettingPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
+            };
+            AboutButton.Click += (s, e) =>
+            {
+                if(SettingPanel.Visible)
+                {
+                    SettingPanel.Visible = false;
+                    SettingButton.BackColor = SystemColors.Control;
+                }
+                AboutPanel.Visible = !AboutPanel.Visible;
+                AboutButton.BackColor = AboutPanel.Visible ? SystemColors.ControlLight : SystemColors.Control;
+
             };
 
             Tray.MouseClick += (s, e) =>
@@ -75,6 +91,29 @@ namespace WeatherCS
                     Tray.Visible = false;
                     WindowState = FormWindowState.Normal;
                 }
+            };
+            TrayAboutButton.Click += (s, e) =>
+            {
+                Show();
+                Tray.Visible = false;
+                WindowState = FormWindowState.Normal;
+
+                if (!AboutPanel.Visible)
+                {
+                    AboutButton.Focus();
+                    SendKeys.Send(" ");
+                }
+            };
+            TraySettingsButton.Click += (s, e) =>
+            {
+                Show();
+                Tray.Visible = false;
+                WindowState = FormWindowState.Normal;
+                if (!SettingPanel.Visible)
+                {
+                    SettingButton.Focus();
+                    SendKeys.Send(" ");
+                }   
             };
             TrayCloseButton.Click += (s, e) => { Close(); };
 

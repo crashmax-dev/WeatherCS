@@ -133,15 +133,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\close-white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\close-gray.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\minimize-gray.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
@@ -152,6 +143,11 @@
     <None Include="Resources\www.png" />
     <None Include="Resources\setting-gray.png" />
     <None Include="Resources\about-gray.png" />
+    <None Include="Resources\close-white.png" />
+    <None Include="Resources\close-gray.png" />
+    <None Include="Resources\minimize-gray.png" />
+    <None Include="Resources\setting-white.png" />
+    <None Include="Resources\about-white.png" />
     <Content Include="weather.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
