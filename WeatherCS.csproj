@@ -27,8 +27,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>7</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -55,7 +55,8 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>weather.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>8F319D78B540DD626977AB098B692342182E10F2</ManifestCertificateThumbprint>
@@ -95,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs" />
     <Compile Include="API.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -148,7 +150,10 @@
     <None Include="Resources\minimize-gray.png" />
     <None Include="Resources\setting-white.png" />
     <None Include="Resources\about-white.png" />
-    <Content Include="weather.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+    <None Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

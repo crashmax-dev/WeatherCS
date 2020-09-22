@@ -33,6 +33,12 @@
             this.WeatherIco = new System.Windows.Forms.PictureBox();
             this.Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.TrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.TrayWeatherInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.TrayAboutButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.TraySettingsButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.TraySeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.TrayCloseButton = new System.Windows.Forms.ToolStripMenuItem();
             this.TempLabel = new System.Windows.Forms.Label();
             this.CloudsLabel = new System.Windows.Forms.Label();
             this.HumidityLabel = new System.Windows.Forms.Label();
@@ -41,6 +47,9 @@
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
             this.SettingPanel = new System.Windows.Forms.Panel();
+            this.SettingsRestoreButton = new System.Windows.Forms.Button();
+            this.SettingsApiKey = new System.Windows.Forms.TextBox();
+            this.ApiKeyLabel = new System.Windows.Forms.Label();
             this.LabelLocationS = new System.Windows.Forms.Label();
             this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.Main = new System.Windows.Forms.Panel();
@@ -49,24 +58,27 @@
             this.DescriptionErrorLabel = new System.Windows.Forms.Label();
             this.ReconnectButton = new System.Windows.Forms.Button();
             this.ErrorPanel = new System.Windows.Forms.Panel();
-            this.TraySeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.ErrGlobePic = new System.Windows.Forms.PictureBox();
+            this.AboutPanel = new System.Windows.Forms.Panel();
+            this.AboutAppDesc = new System.Windows.Forms.Label();
+            this.AboutAppName = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.CloseButton = new System.Windows.Forms.Button();
             this.MinimizeButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
-            this.ErrGlobePic = new System.Windows.Forms.PictureBox();
-            this.TrayAboutButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.TraySettingsButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.TrayCloseButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.AboutPanel = new System.Windows.Forms.Panel();
-            this.ApiKeyLabel = new System.Windows.Forms.Label();
-            this.SettingsApiKey = new System.Windows.Forms.TextBox();
+            this.openGitHub = new System.Windows.Forms.Button();
+            this.SettingsSaveButton = new System.Windows.Forms.Button();
+            this.AboutAppVer = new System.Windows.Forms.Label();
+            this.GetAPIButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
             this.Main.SuspendLayout();
             this.ErrorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ErrGlobePic)).BeginInit();
+            this.AboutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // WeatherIco
@@ -91,6 +103,8 @@
             this.TrayMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
             this.TrayMenu.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TrayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TrayWeatherInfo,
+            this.toolStripSeparator1,
             this.TrayAboutButton,
             this.TraySettingsButton,
             this.TraySeparator,
@@ -98,7 +112,47 @@
             this.TrayMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.TrayMenu.Name = "contextMenuStrip1";
             this.TrayMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.TrayMenu.Size = new System.Drawing.Size(150, 76);
+            this.TrayMenu.Size = new System.Drawing.Size(150, 104);
+            // 
+            // TrayWeatherInfo
+            // 
+            this.TrayWeatherInfo.ForeColor = System.Drawing.Color.White;
+            this.TrayWeatherInfo.Name = "TrayWeatherInfo";
+            this.TrayWeatherInfo.Size = new System.Drawing.Size(149, 22);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(146, 6);
+            // 
+            // TrayAboutButton
+            // 
+            this.TrayAboutButton.ForeColor = System.Drawing.Color.White;
+            this.TrayAboutButton.Image = global::WeatherCS.Properties.Resources.about_white;
+            this.TrayAboutButton.Name = "TrayAboutButton";
+            this.TrayAboutButton.Size = new System.Drawing.Size(149, 22);
+            this.TrayAboutButton.Text = "О программе";
+            // 
+            // TraySettingsButton
+            // 
+            this.TraySettingsButton.ForeColor = System.Drawing.Color.White;
+            this.TraySettingsButton.Image = global::WeatherCS.Properties.Resources.setting_white;
+            this.TraySettingsButton.Name = "TraySettingsButton";
+            this.TraySettingsButton.Size = new System.Drawing.Size(149, 22);
+            this.TraySettingsButton.Text = "Настройки";
+            // 
+            // TraySeparator
+            // 
+            this.TraySeparator.Name = "TraySeparator";
+            this.TraySeparator.Size = new System.Drawing.Size(146, 6);
+            // 
+            // TrayCloseButton
+            // 
+            this.TrayCloseButton.ForeColor = System.Drawing.Color.White;
+            this.TrayCloseButton.Image = global::WeatherCS.Properties.Resources.close_white;
+            this.TrayCloseButton.Name = "TrayCloseButton";
+            this.TrayCloseButton.Size = new System.Drawing.Size(149, 22);
+            this.TrayCloseButton.Text = "Закрыть";
             // 
             // TempLabel
             // 
@@ -157,7 +211,7 @@
             this.LocationInput.Font = new System.Drawing.Font("Segoe UI Semibold", 27.75F);
             this.LocationInput.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.LocationInput.Location = new System.Drawing.Point(11, 3);
-            this.LocationInput.MaxLength = 64;
+            this.LocationInput.MaxLength = 30;
             this.LocationInput.Name = "LocationInput";
             this.LocationInput.Size = new System.Drawing.Size(379, 50);
             this.LocationInput.TabIndex = 19;
@@ -178,6 +232,9 @@
             // SettingPanel
             // 
             this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingPanel.Controls.Add(this.GetAPIButton);
+            this.SettingPanel.Controls.Add(this.SettingsSaveButton);
+            this.SettingPanel.Controls.Add(this.SettingsRestoreButton);
             this.SettingPanel.Controls.Add(this.SettingsApiKey);
             this.SettingPanel.Controls.Add(this.ApiKeyLabel);
             this.SettingPanel.Controls.Add(this.LabelLocationS);
@@ -188,29 +245,66 @@
             this.SettingPanel.TabIndex = 24;
             this.SettingPanel.Visible = false;
             // 
+            // SettingsRestoreButton
+            // 
+            this.SettingsRestoreButton.AutoSize = true;
+            this.SettingsRestoreButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsRestoreButton.FlatAppearance.BorderSize = 0;
+            this.SettingsRestoreButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsRestoreButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsRestoreButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsRestoreButton.Location = new System.Drawing.Point(206, 237);
+            this.SettingsRestoreButton.Name = "SettingsRestoreButton";
+            this.SettingsRestoreButton.Size = new System.Drawing.Size(100, 23);
+            this.SettingsRestoreButton.TabIndex = 0;
+            this.SettingsRestoreButton.TabStop = false;
+            this.SettingsRestoreButton.Text = "Сбросить";
+            this.SettingsRestoreButton.UseVisualStyleBackColor = false;
+            // 
+            // SettingsApiKey
+            // 
+            this.SettingsApiKey.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsApiKey.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsApiKey.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F);
+            this.SettingsApiKey.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsApiKey.Location = new System.Drawing.Point(15, 75);
+            this.SettingsApiKey.MaxLength = 32;
+            this.SettingsApiKey.Name = "SettingsApiKey";
+            this.SettingsApiKey.PasswordChar = '●';
+            this.SettingsApiKey.Size = new System.Drawing.Size(373, 23);
+            this.SettingsApiKey.TabIndex = 3;
+            // 
+            // ApiKeyLabel
+            // 
+            this.ApiKeyLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.ApiKeyLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ApiKeyLabel.Location = new System.Drawing.Point(12, 59);
+            this.ApiKeyLabel.Name = "ApiKeyLabel";
+            this.ApiKeyLabel.Size = new System.Drawing.Size(379, 19);
+            this.ApiKeyLabel.TabIndex = 2;
+            this.ApiKeyLabel.Text = "API Ключ:";
+            // 
             // LabelLocationS
             // 
             this.LabelLocationS.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.LabelLocationS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LabelLocationS.Location = new System.Drawing.Point(11, 6);
+            this.LabelLocationS.Location = new System.Drawing.Point(12, 12);
             this.LabelLocationS.Name = "LabelLocationS";
             this.LabelLocationS.Size = new System.Drawing.Size(379, 19);
             this.LabelLocationS.TabIndex = 1;
             this.LabelLocationS.Text = "Город, страна или регион:";
-            this.LabelLocationS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SettingsLocation
             // 
             this.SettingsLocation.BackColor = System.Drawing.SystemColors.ControlLight;
             this.SettingsLocation.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.SettingsLocation.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
+            this.SettingsLocation.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F);
             this.SettingsLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SettingsLocation.Location = new System.Drawing.Point(11, 23);
-            this.SettingsLocation.MaxLength = 64;
+            this.SettingsLocation.Location = new System.Drawing.Point(15, 28);
+            this.SettingsLocation.MaxLength = 30;
             this.SettingsLocation.Name = "SettingsLocation";
-            this.SettingsLocation.Size = new System.Drawing.Size(379, 30);
+            this.SettingsLocation.Size = new System.Drawing.Size(375, 23);
             this.SettingsLocation.TabIndex = 0;
-            this.SettingsLocation.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Main
             // 
@@ -284,10 +378,64 @@
             this.ErrorPanel.TabIndex = 0;
             this.ErrorPanel.Visible = false;
             // 
-            // TraySeparator
+            // ErrGlobePic
             // 
-            this.TraySeparator.Name = "TraySeparator";
-            this.TraySeparator.Size = new System.Drawing.Size(146, 6);
+            this.ErrGlobePic.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ErrGlobePic.ErrorImage = null;
+            this.ErrGlobePic.Image = global::WeatherCS.Properties.Resources.www;
+            this.ErrGlobePic.InitialImage = null;
+            this.ErrGlobePic.Location = new System.Drawing.Point(100, 0);
+            this.ErrGlobePic.Name = "ErrGlobePic";
+            this.ErrGlobePic.Size = new System.Drawing.Size(200, 200);
+            this.ErrGlobePic.TabIndex = 9;
+            this.ErrGlobePic.TabStop = false;
+            this.ErrGlobePic.WaitOnLoad = true;
+            // 
+            // AboutPanel
+            // 
+            this.AboutPanel.Controls.Add(this.AboutAppVer);
+            this.AboutPanel.Controls.Add(this.openGitHub);
+            this.AboutPanel.Controls.Add(this.AboutAppDesc);
+            this.AboutPanel.Controls.Add(this.AboutAppName);
+            this.AboutPanel.Controls.Add(this.pictureBox1);
+            this.AboutPanel.Location = new System.Drawing.Point(0, 21);
+            this.AboutPanel.Name = "AboutPanel";
+            this.AboutPanel.Size = new System.Drawing.Size(400, 279);
+            this.AboutPanel.TabIndex = 26;
+            this.AboutPanel.Visible = false;
+            // 
+            // AboutAppDesc
+            // 
+            this.AboutAppDesc.Font = new System.Drawing.Font("Segoe UI Semilight", 11.75F);
+            this.AboutAppDesc.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.AboutAppDesc.Location = new System.Drawing.Point(20, 186);
+            this.AboutAppDesc.Name = "AboutAppDesc";
+            this.AboutAppDesc.Size = new System.Drawing.Size(361, 43);
+            this.AboutAppDesc.TabIndex = 20;
+            this.AboutAppDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // AboutAppName
+            // 
+            this.AboutAppName.Font = new System.Drawing.Font("Segoe UI Semilight", 22.75F);
+            this.AboutAppName.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.AboutAppName.Location = new System.Drawing.Point(21, 122);
+            this.AboutAppName.Name = "AboutAppName";
+            this.AboutAppName.Size = new System.Drawing.Size(354, 44);
+            this.AboutAppName.TabIndex = 18;
+            this.AboutAppName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::WeatherCS.Properties.Resources.logo;
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(120, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(160, 130);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // CloseButton
             // 
@@ -345,75 +493,63 @@
             this.AboutButton.TabStop = false;
             this.AboutButton.UseVisualStyleBackColor = false;
             // 
-            // ErrGlobePic
+            // openGitHub
             // 
-            this.ErrGlobePic.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ErrGlobePic.ErrorImage = null;
-            this.ErrGlobePic.Image = global::WeatherCS.Properties.Resources.www;
-            this.ErrGlobePic.InitialImage = null;
-            this.ErrGlobePic.Location = new System.Drawing.Point(100, 0);
-            this.ErrGlobePic.Name = "ErrGlobePic";
-            this.ErrGlobePic.Size = new System.Drawing.Size(200, 200);
-            this.ErrGlobePic.TabIndex = 9;
-            this.ErrGlobePic.TabStop = false;
-            this.ErrGlobePic.WaitOnLoad = true;
+            this.openGitHub.AutoSize = true;
+            this.openGitHub.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.openGitHub.FlatAppearance.BorderSize = 0;
+            this.openGitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openGitHub.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openGitHub.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.openGitHub.Location = new System.Drawing.Point(150, 237);
+            this.openGitHub.Name = "openGitHub";
+            this.openGitHub.Size = new System.Drawing.Size(105, 23);
+            this.openGitHub.TabIndex = 21;
+            this.openGitHub.TabStop = false;
+            this.openGitHub.Text = "Посетить GitHub";
+            this.openGitHub.UseVisualStyleBackColor = false;
             // 
-            // TrayAboutButton
+            // SettingsSaveButton
             // 
-            this.TrayAboutButton.ForeColor = System.Drawing.Color.White;
-            this.TrayAboutButton.Image = global::WeatherCS.Properties.Resources.about_white;
-            this.TrayAboutButton.Name = "TrayAboutButton";
-            this.TrayAboutButton.Size = new System.Drawing.Size(149, 22);
-            this.TrayAboutButton.Text = "О программе";
+            this.SettingsSaveButton.AutoSize = true;
+            this.SettingsSaveButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsSaveButton.FlatAppearance.BorderSize = 0;
+            this.SettingsSaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsSaveButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsSaveButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsSaveButton.Location = new System.Drawing.Point(94, 237);
+            this.SettingsSaveButton.Name = "SettingsSaveButton";
+            this.SettingsSaveButton.Size = new System.Drawing.Size(100, 23);
+            this.SettingsSaveButton.TabIndex = 6;
+            this.SettingsSaveButton.TabStop = false;
+            this.SettingsSaveButton.Text = "Сохранить";
+            this.SettingsSaveButton.UseVisualStyleBackColor = false;
             // 
-            // TraySettingsButton
+            // AboutAppVer
             // 
-            this.TraySettingsButton.ForeColor = System.Drawing.Color.White;
-            this.TraySettingsButton.Image = global::WeatherCS.Properties.Resources.setting_white;
-            this.TraySettingsButton.Name = "TraySettingsButton";
-            this.TraySettingsButton.Size = new System.Drawing.Size(149, 22);
-            this.TraySettingsButton.Text = "Настройки";
+            this.AboutAppVer.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.AboutAppVer.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.AboutAppVer.Location = new System.Drawing.Point(120, 162);
+            this.AboutAppVer.Name = "AboutAppVer";
+            this.AboutAppVer.Size = new System.Drawing.Size(160, 25);
+            this.AboutAppVer.TabIndex = 22;
+            this.AboutAppVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TrayCloseButton
+            // GetAPIButton
             // 
-            this.TrayCloseButton.ForeColor = System.Drawing.Color.White;
-            this.TrayCloseButton.Image = global::WeatherCS.Properties.Resources.close_white;
-            this.TrayCloseButton.Name = "TrayCloseButton";
-            this.TrayCloseButton.Size = new System.Drawing.Size(149, 22);
-            this.TrayCloseButton.Text = "Закрыть";
-            // 
-            // AboutPanel
-            // 
-            this.AboutPanel.Location = new System.Drawing.Point(0, 21);
-            this.AboutPanel.Name = "AboutPanel";
-            this.AboutPanel.Size = new System.Drawing.Size(400, 279);
-            this.AboutPanel.TabIndex = 26;
-            this.AboutPanel.Visible = false;
-            // 
-            // ApiKeyLabel
-            // 
-            this.ApiKeyLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.ApiKeyLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ApiKeyLabel.Location = new System.Drawing.Point(11, 56);
-            this.ApiKeyLabel.Name = "ApiKeyLabel";
-            this.ApiKeyLabel.Size = new System.Drawing.Size(379, 19);
-            this.ApiKeyLabel.TabIndex = 2;
-            this.ApiKeyLabel.Text = "OpenWeatherMap API Ключ:";
-            this.ApiKeyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SettingsApiKey
-            // 
-            this.SettingsApiKey.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.SettingsApiKey.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.SettingsApiKey.Font = new System.Drawing.Font("Segoe UI Semibold", 16.75F);
-            this.SettingsApiKey.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SettingsApiKey.Location = new System.Drawing.Point(12, 74);
-            this.SettingsApiKey.MaxLength = 64;
-            this.SettingsApiKey.Name = "SettingsApiKey";
-            this.SettingsApiKey.PasswordChar = '●';
-            this.SettingsApiKey.Size = new System.Drawing.Size(379, 30);
-            this.SettingsApiKey.TabIndex = 3;
-            this.SettingsApiKey.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GetAPIButton.AutoSize = true;
+            this.GetAPIButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.GetAPIButton.FlatAppearance.BorderSize = 0;
+            this.GetAPIButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetAPIButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GetAPIButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.GetAPIButton.Location = new System.Drawing.Point(322, 75);
+            this.GetAPIButton.Name = "GetAPIButton";
+            this.GetAPIButton.Size = new System.Drawing.Size(68, 23);
+            this.GetAPIButton.TabIndex = 7;
+            this.GetAPIButton.TabStop = false;
+            this.GetAPIButton.Text = "Получить";
+            this.GetAPIButton.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
@@ -449,6 +585,9 @@
             this.ErrorPanel.ResumeLayout(false);
             this.ErrorPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ErrGlobePic)).EndInit();
+            this.AboutPanel.ResumeLayout(false);
+            this.AboutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -486,5 +625,15 @@
         private System.Windows.Forms.Panel AboutPanel;
         private System.Windows.Forms.Label ApiKeyLabel;
         private System.Windows.Forms.TextBox SettingsApiKey;
+        private System.Windows.Forms.ToolStripMenuItem TrayWeatherInfo;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Button SettingsRestoreButton;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label AboutAppName;
+        private System.Windows.Forms.Label AboutAppDesc;
+        private System.Windows.Forms.Button openGitHub;
+        private System.Windows.Forms.Button SettingsSaveButton;
+        private System.Windows.Forms.Label AboutAppVer;
+        private System.Windows.Forms.Button GetAPIButton;
     }
 }

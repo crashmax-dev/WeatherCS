@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -154,6 +155,34 @@ namespace WeatherCS
             {
                 SettingsApiKey.PasswordChar = '●';
             };
+            SettingsApiKey.KeyPress += (s, e) =>
+            {
+                char k = e.KeyChar;
+                if (!char.IsControl(k) &&
+                    !char.IsNumber(k) &&
+                    (k <= 96 || k >= 193))
+                {
+                    e.Handled = true;
+                }
+            };
+            SettingsSaveButton.Click += (s, e) =>
+            {
+                SettingsSaveButton.Enabled = false;
+                SetRegistry("api", SettingsApiKey.Text);
+                GetWeather(SettingsLocation.Text);
+                SettingsSaveButton.Enabled = true;
+            };
+            SettingsRestoreButton.Click += (s, e) =>
+            {
+                using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\WeatherCS"))
+                {
+                    if (reg != null)
+                    {
+                        Registry.CurrentUser.DeleteSubKey(@"Software\WeatherCS");
+                        InitializeApp();
+                    }
+                }
+            };
 
             ReconnectButton.Click += (s, e) =>
             {
@@ -162,6 +191,11 @@ namespace WeatherCS
                 InitializeApp();
             };
 
+            AboutAppName.Text = About.AssemblyTitle;
+            AboutAppVer.Text = About.AssemblyVersion;
+            AboutAppDesc.Text = About.AssemblyDescription;
+            openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-off/WeatherCS"); };
+            GetAPIButton.Click += (s, e) => { Process.Start("https://openweathermap.org/appid"); };
             InitializeApp();
         }
 
@@ -223,6 +257,7 @@ namespace WeatherCS
                 // labels
                 Text = title;
                 Tray.Text = title;
+                TrayWeatherInfo.Text = title;
                 TempLabel.Text = temp;
                 CloudsLabel.Text = clouds;
                 HumidityLabel.Text = humidity;
@@ -237,12 +272,13 @@ namespace WeatherCS
             }
             else if (w.Cod.Equals("404"))
             {
+                SettingsLocation.ForeColor = Color.Firebrick;
                 LocMessage.ForeColor = Color.Firebrick;
                 LocMessage.Text = "Город не найден, чтобы откатить, нажмите Esc";
             }
             else if (w.Cod.Equals("401"))
             {
-                ErrorHandler("Недействительный ключ авторизации");
+                ErrorHandler("Ключ не действителен");
             }
             else
             {
@@ -273,17 +309,23 @@ namespace WeatherCS
                 Text = "WeatherCS";
                 // 64 ???
                 Tray.Text = error;
+                TrayWeatherInfo.Text = error;
 
                 ErrorPanel.Visible = true;
                 ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
                 DescriptionErrorLabel.Text = error;
+                SettingsLocation.Text = error;
+
+                RegistryApp("api", API.Key);
+                SettingsApiKey.Text = GetRegistry("api");
                 FadeInApp();
             }
             else
             {
                 ErrorPanel.Visible = false;
 
+                SettingsLocation.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
                 FadeInApp();
