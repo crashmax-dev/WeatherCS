@@ -20,11 +20,11 @@ WeatherCS — Виджет-приложение
 Скачать:
 --------
 
-Последняя версия: [https://github.com/crashmax-off/WeatherCS/releases/latest](WeatherCS)
+Последняя версия: [WeatherCS](https://github.com/crashmax-off/WeatherCS/releases/latest)
 
 Nuget-пакеты / API:
 -------------
- - [https://www.nuget.org/packages/Costura.Fody](Costura.Fody)
- - [https://www.nuget.org/packages/Newtonsoft.Json/](Newtonsoft.Json)
+ - [Costura.Fody](https://www.nuget.org/packages/Costura.Fody)
+ - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json/)
  - [openweathermap.org](https://openweathermap.org)
  - [ipwhois.app](https://ipwhois.app)
