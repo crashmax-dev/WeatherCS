@@ -73,7 +73,7 @@ namespace WeatherCS
             };
             AboutButton.Click += (s, e) =>
             {
-                if(SettingPanel.Visible)
+                if (SettingPanel.Visible)
                 {
                     SettingPanel.Visible = false;
                     SettingButton.BackColor = SystemColors.Control;
@@ -113,7 +113,7 @@ namespace WeatherCS
                 {
                     SettingButton.Focus();
                     SendKeys.Send(" ");
-                }   
+                }
             };
             TrayCloseButton.Click += (s, e) => { Close(); };
 
@@ -177,19 +177,19 @@ namespace WeatherCS
 
             if (location.Success)
             {
-                RegistryApp("api", "4b7f29a8e15af3ec8d463f83ce5dd419");
-                RegistryApp("location", location.City);
+                AutoRun();
+                RegistryApp("api", API.Key);
                 GetWeather();
             }
             else
             {
-                ErrorHandler("Ошибка интернет соединения");
+                ErrorHandler("Отсутствует интернет соединение");
             }
         }
 
-        void GetWeather(string newCity = "")
+        void GetWeather(string newCity = "", string newKey = "")
         {
-            string key = GetRegistry("api");
+            string key = newKey != "" ? newKey : GetRegistry("api");
             string query = newCity != "" ? newCity : GetRegistry("location");
 
             string openweathermap = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}";
@@ -197,6 +197,7 @@ namespace WeatherCS
 
             if (w.Cod.Equals("200"))
             {
+                SetRegistry("key", key);
                 SetRegistry("location", query);
 
                 string temp = $"{Math.Round(w.Main.Temp, 1)}°C";
@@ -255,7 +256,7 @@ namespace WeatherCS
             WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w[0].Icon);
         }
 
-        async void ErrorHandler(string error = "")
+        public async void ErrorHandler(string error = "")
         {
             if (error != "")
             {
@@ -281,6 +282,12 @@ namespace WeatherCS
             }
         }
 
+        void AutoRun()
+        {
+            RegistryKey Run = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+            Run.SetValue("WeatherCS", $"\"{Application.ExecutablePath}\"");
+        }
+
         void RegistryApp(string key, string value)
         {
             using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
@@ -299,7 +306,17 @@ namespace WeatherCS
         void SetRegistry(string key, string value)
         {
             using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
-                reg.SetValue(key, value);
+            {
+
+                if (reg.GetValue(key) == null)
+                {
+                    reg.SetValue(key, value);
+                }
+                else if (reg.GetValue(key).ToString() != value)
+                {
+                    reg.SetValue(key, value);
+                }
+            }
         }
 
         string FirstLetterToUpper(string str)

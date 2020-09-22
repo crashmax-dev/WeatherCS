@@ -4,11 +4,16 @@ using System.Text;
 // Install-Package Newtonsoft.Json
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Net.NetworkInformation;
 
 namespace WeatherCS
 {
     public static class API
     {
+        // https://openweathermap.org/api
+        public static string Key = "4b7f29a8e15af3ec8d463f83ce5dd419";
+
         public class Geo
         {
             public bool Success { get; set; }
@@ -48,6 +53,15 @@ namespace WeatherCS
             public string Cod { get; set; }
         }
 
+        public static bool CheckInternet()
+        {
+            if (NetworkInterface.GetIsNetworkAvailable() &&
+                        new Ping().Send(new IPAddress(new byte[] { 8, 8, 8, 8 }), 2000).Status == IPStatus.Success)
+                return true;
+            else
+                return false;
+        }
+
         public static T GetJSON<T>(string url) where T : new()
         {
             using (var w = new WebClient())
@@ -61,9 +75,16 @@ namespace WeatherCS
                 }
                 catch (WebException ex)
                 {
-                    using (StreamReader r = new StreamReader(ex.Response.GetResponseStream()))
+                    if (CheckInternet())
                     {
-                        json_data = r.ReadToEnd();
+                        using (StreamReader r = new StreamReader(ex.Response.GetResponseStream()))
+                        {
+                            json_data = r.ReadToEnd();
+                        }
+                    }
+                    else
+                    {
+                        return JsonConvert.DeserializeObject<T>("{\"cod\": 0}");
                     }
                 }
 
