@@ -515,6 +515,7 @@
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.MinimizeButton.Image = global::WeatherCS.Properties.Resources.minimize_gray;
             this.MinimizeButton.Location = new System.Drawing.Point(350, 0);
             this.MinimizeButton.Name = "MinimizeButton";
             this.MinimizeButton.Size = new System.Drawing.Size(25, 21);
