@@ -47,6 +47,8 @@
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
             this.SettingPanel = new System.Windows.Forms.Panel();
+            this.GetAPIButton = new System.Windows.Forms.Button();
+            this.SettingsSaveButton = new System.Windows.Forms.Button();
             this.SettingsRestoreButton = new System.Windows.Forms.Button();
             this.SettingsApiKey = new System.Windows.Forms.TextBox();
             this.ApiKeyLabel = new System.Windows.Forms.Label();
@@ -60,6 +62,8 @@
             this.ErrorPanel = new System.Windows.Forms.Panel();
             this.ErrGlobePic = new System.Windows.Forms.PictureBox();
             this.AboutPanel = new System.Windows.Forms.Panel();
+            this.AboutAppVer = new System.Windows.Forms.Label();
+            this.openGitHub = new System.Windows.Forms.Button();
             this.AboutAppDesc = new System.Windows.Forms.Label();
             this.AboutAppName = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -67,10 +71,6 @@
             this.MinimizeButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
-            this.openGitHub = new System.Windows.Forms.Button();
-            this.SettingsSaveButton = new System.Windows.Forms.Button();
-            this.AboutAppVer = new System.Windows.Forms.Label();
-            this.GetAPIButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
@@ -245,6 +245,38 @@
             this.SettingPanel.TabIndex = 24;
             this.SettingPanel.Visible = false;
             // 
+            // GetAPIButton
+            // 
+            this.GetAPIButton.AutoSize = true;
+            this.GetAPIButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.GetAPIButton.FlatAppearance.BorderSize = 0;
+            this.GetAPIButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetAPIButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GetAPIButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.GetAPIButton.Location = new System.Drawing.Point(322, 75);
+            this.GetAPIButton.Name = "GetAPIButton";
+            this.GetAPIButton.Size = new System.Drawing.Size(68, 23);
+            this.GetAPIButton.TabIndex = 7;
+            this.GetAPIButton.TabStop = false;
+            this.GetAPIButton.Text = "Получить";
+            this.GetAPIButton.UseVisualStyleBackColor = false;
+            // 
+            // SettingsSaveButton
+            // 
+            this.SettingsSaveButton.AutoSize = true;
+            this.SettingsSaveButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsSaveButton.FlatAppearance.BorderSize = 0;
+            this.SettingsSaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsSaveButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsSaveButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsSaveButton.Location = new System.Drawing.Point(94, 237);
+            this.SettingsSaveButton.Name = "SettingsSaveButton";
+            this.SettingsSaveButton.Size = new System.Drawing.Size(100, 23);
+            this.SettingsSaveButton.TabIndex = 6;
+            this.SettingsSaveButton.TabStop = false;
+            this.SettingsSaveButton.Text = "Сохранить";
+            this.SettingsSaveButton.UseVisualStyleBackColor = false;
+            // 
             // SettingsRestoreButton
             // 
             this.SettingsRestoreButton.AutoSize = true;
@@ -404,6 +436,32 @@
             this.AboutPanel.TabIndex = 26;
             this.AboutPanel.Visible = false;
             // 
+            // AboutAppVer
+            // 
+            this.AboutAppVer.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.AboutAppVer.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.AboutAppVer.Location = new System.Drawing.Point(120, 162);
+            this.AboutAppVer.Name = "AboutAppVer";
+            this.AboutAppVer.Size = new System.Drawing.Size(160, 25);
+            this.AboutAppVer.TabIndex = 22;
+            this.AboutAppVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // openGitHub
+            // 
+            this.openGitHub.AutoSize = true;
+            this.openGitHub.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.openGitHub.FlatAppearance.BorderSize = 0;
+            this.openGitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openGitHub.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openGitHub.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.openGitHub.Location = new System.Drawing.Point(150, 237);
+            this.openGitHub.Name = "openGitHub";
+            this.openGitHub.Size = new System.Drawing.Size(105, 23);
+            this.openGitHub.TabIndex = 21;
+            this.openGitHub.TabStop = false;
+            this.openGitHub.Text = "Посетить GitHub";
+            this.openGitHub.UseVisualStyleBackColor = false;
+            // 
             // AboutAppDesc
             // 
             this.AboutAppDesc.Font = new System.Drawing.Font("Segoe UI Semilight", 11.75F);
@@ -457,7 +515,6 @@
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.MinimizeButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeButton.Image")));
             this.MinimizeButton.Location = new System.Drawing.Point(350, 0);
             this.MinimizeButton.Name = "MinimizeButton";
             this.MinimizeButton.Size = new System.Drawing.Size(25, 21);
@@ -492,64 +549,6 @@
             this.AboutButton.TabIndex = 22;
             this.AboutButton.TabStop = false;
             this.AboutButton.UseVisualStyleBackColor = false;
-            // 
-            // openGitHub
-            // 
-            this.openGitHub.AutoSize = true;
-            this.openGitHub.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.openGitHub.FlatAppearance.BorderSize = 0;
-            this.openGitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.openGitHub.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openGitHub.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.openGitHub.Location = new System.Drawing.Point(150, 237);
-            this.openGitHub.Name = "openGitHub";
-            this.openGitHub.Size = new System.Drawing.Size(105, 23);
-            this.openGitHub.TabIndex = 21;
-            this.openGitHub.TabStop = false;
-            this.openGitHub.Text = "Посетить GitHub";
-            this.openGitHub.UseVisualStyleBackColor = false;
-            // 
-            // SettingsSaveButton
-            // 
-            this.SettingsSaveButton.AutoSize = true;
-            this.SettingsSaveButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.SettingsSaveButton.FlatAppearance.BorderSize = 0;
-            this.SettingsSaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SettingsSaveButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsSaveButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SettingsSaveButton.Location = new System.Drawing.Point(94, 237);
-            this.SettingsSaveButton.Name = "SettingsSaveButton";
-            this.SettingsSaveButton.Size = new System.Drawing.Size(100, 23);
-            this.SettingsSaveButton.TabIndex = 6;
-            this.SettingsSaveButton.TabStop = false;
-            this.SettingsSaveButton.Text = "Сохранить";
-            this.SettingsSaveButton.UseVisualStyleBackColor = false;
-            // 
-            // AboutAppVer
-            // 
-            this.AboutAppVer.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.AboutAppVer.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.AboutAppVer.Location = new System.Drawing.Point(120, 162);
-            this.AboutAppVer.Name = "AboutAppVer";
-            this.AboutAppVer.Size = new System.Drawing.Size(160, 25);
-            this.AboutAppVer.TabIndex = 22;
-            this.AboutAppVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // GetAPIButton
-            // 
-            this.GetAPIButton.AutoSize = true;
-            this.GetAPIButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.GetAPIButton.FlatAppearance.BorderSize = 0;
-            this.GetAPIButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GetAPIButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GetAPIButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.GetAPIButton.Location = new System.Drawing.Point(322, 75);
-            this.GetAPIButton.Name = "GetAPIButton";
-            this.GetAPIButton.Size = new System.Drawing.Size(68, 23);
-            this.GetAPIButton.TabIndex = 7;
-            this.GetAPIButton.TabStop = false;
-            this.GetAPIButton.Text = "Получить";
-            this.GetAPIButton.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
