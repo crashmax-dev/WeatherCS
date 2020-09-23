@@ -89,6 +89,7 @@ namespace WeatherCS
                 if (e.Button == MouseButtons.Left)
                 {
                     Show();
+                    ShowInTaskbar = true;
                     Tray.Visible = false;
                     WindowState = FormWindowState.Normal;
                 }
@@ -336,8 +337,23 @@ namespace WeatherCS
 
         void AutoRun()
         {
-            RegistryKey Run = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-            Run.SetValue("WeatherCS", $"\"{Application.ExecutablePath}\"");
+            using (RegistryKey Run = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+            {
+                Run.SetValue("WeatherCS", Application.ExecutablePath + " /minimized");
+
+                String[] args = Environment.GetCommandLineArgs();
+
+                if (args.Length > 1)
+                {
+                    if (args[1] == "/minimized")
+                    {
+                        Hide();
+                        Tray.Visible = true;
+                        ShowInTaskbar = false;
+                        WindowState = FormWindowState.Minimized;
+                    }
+                }
+            }
         }
 
         void RegistryApp(string key, string value)
