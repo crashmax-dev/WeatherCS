@@ -47,6 +47,8 @@
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
             this.SettingPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SettingsRunPath = new System.Windows.Forms.TextBox();
             this.SettingsAutoRun = new System.Windows.Forms.CheckBox();
             this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.GetAPIButton = new System.Windows.Forms.Button();
@@ -63,6 +65,7 @@
             this.ErrorPanel = new System.Windows.Forms.Panel();
             this.ErrGlobePic = new System.Windows.Forms.PictureBox();
             this.AboutPanel = new System.Windows.Forms.Panel();
+            this.AboutCheckUpdates = new System.Windows.Forms.Button();
             this.AboutAppVer = new System.Windows.Forms.Label();
             this.openGitHub = new System.Windows.Forms.Button();
             this.AboutAppDesc = new System.Windows.Forms.Label();
@@ -72,8 +75,6 @@
             this.MinimizeButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
-            this.SettingsRunPath = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
@@ -250,6 +251,29 @@
             this.SettingPanel.Size = new System.Drawing.Size(400, 279);
             this.SettingPanel.TabIndex = 24;
             this.SettingPanel.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label1.Location = new System.Drawing.Point(11, 103);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(376, 19);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Автозагрузка:";
+            // 
+            // SettingsRunPath
+            // 
+            this.SettingsRunPath.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsRunPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsRunPath.Font = new System.Drawing.Font("Segoe UI Semibold", 10.75F);
+            this.SettingsRunPath.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsRunPath.Location = new System.Drawing.Point(14, 122);
+            this.SettingsRunPath.MaxLength = 30;
+            this.SettingsRunPath.Name = "SettingsRunPath";
+            this.SettingsRunPath.ReadOnly = true;
+            this.SettingsRunPath.Size = new System.Drawing.Size(371, 20);
+            this.SettingsRunPath.TabIndex = 9;
             // 
             // SettingsAutoRun
             // 
@@ -445,6 +469,7 @@
             // 
             // AboutPanel
             // 
+            this.AboutPanel.Controls.Add(this.AboutCheckUpdates);
             this.AboutPanel.Controls.Add(this.AboutAppVer);
             this.AboutPanel.Controls.Add(this.openGitHub);
             this.AboutPanel.Controls.Add(this.AboutAppDesc);
@@ -455,6 +480,21 @@
             this.AboutPanel.Size = new System.Drawing.Size(400, 279);
             this.AboutPanel.TabIndex = 26;
             this.AboutPanel.Visible = false;
+            // 
+            // AboutCheckUpdates
+            // 
+            this.AboutCheckUpdates.AutoSize = true;
+            this.AboutCheckUpdates.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.AboutCheckUpdates.FlatAppearance.BorderSize = 0;
+            this.AboutCheckUpdates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AboutCheckUpdates.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutCheckUpdates.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.AboutCheckUpdates.Location = new System.Drawing.Point(72, 237);
+            this.AboutCheckUpdates.Name = "AboutCheckUpdates";
+            this.AboutCheckUpdates.Size = new System.Drawing.Size(145, 23);
+            this.AboutCheckUpdates.TabIndex = 23;
+            this.AboutCheckUpdates.TabStop = false;
+            this.AboutCheckUpdates.UseVisualStyleBackColor = false;
             // 
             // AboutAppVer
             // 
@@ -474,7 +514,7 @@
             this.openGitHub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.openGitHub.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openGitHub.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.openGitHub.Location = new System.Drawing.Point(150, 237);
+            this.openGitHub.Location = new System.Drawing.Point(223, 237);
             this.openGitHub.Name = "openGitHub";
             this.openGitHub.Size = new System.Drawing.Size(105, 23);
             this.openGitHub.TabIndex = 21;
@@ -562,37 +602,17 @@
             this.AboutButton.BackColor = System.Drawing.SystemColors.Control;
             this.AboutButton.FlatAppearance.BorderSize = 0;
             this.AboutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AboutButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.AboutButton.Font = new System.Drawing.Font("Segoe UI Semibold", 7.25F, System.Drawing.FontStyle.Bold);
+            this.AboutButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.AboutButton.Image = global::WeatherCS.Properties.Resources.about_gray;
+            this.AboutButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AboutButton.Location = new System.Drawing.Point(25, 0);
             this.AboutButton.Name = "AboutButton";
             this.AboutButton.Size = new System.Drawing.Size(25, 21);
             this.AboutButton.TabIndex = 22;
             this.AboutButton.TabStop = false;
+            this.AboutButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.AboutButton.UseVisualStyleBackColor = false;
-            // 
-            // SettingsRunPath
-            // 
-            this.SettingsRunPath.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.SettingsRunPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.SettingsRunPath.Font = new System.Drawing.Font("Segoe UI Semibold", 10.75F);
-            this.SettingsRunPath.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SettingsRunPath.Location = new System.Drawing.Point(14, 122);
-            this.SettingsRunPath.MaxLength = 30;
-            this.SettingsRunPath.Name = "SettingsRunPath";
-            this.SettingsRunPath.ReadOnly = true;
-            this.SettingsRunPath.Size = new System.Drawing.Size(371, 20);
-            this.SettingsRunPath.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Location = new System.Drawing.Point(11, 103);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(376, 19);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Автозагрузка:";
             // 
             // MainForm
             // 
@@ -681,5 +701,6 @@
         private System.Windows.Forms.CheckBox SettingsAutoRun;
         private System.Windows.Forms.TextBox SettingsRunPath;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button AboutCheckUpdates;
     }
 }

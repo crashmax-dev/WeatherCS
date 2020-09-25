@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
+using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace WeatherCS
@@ -18,6 +20,7 @@ namespace WeatherCS
         readonly string appName = About.AssemblyTitle;
         readonly string exPath = Application.ExecutablePath;
         bool fadeIn = true;
+        bool isChecked = false;
 
         public MainForm()
         {
@@ -175,14 +178,8 @@ namespace WeatherCS
             };
 
             SettingsLocation.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
-            SettingsApiKey.Enter += (s, e) =>
-            {
-                SettingsApiKey.PasswordChar = '\0';
-            };
-            SettingsApiKey.Leave += (s, e) =>
-            {
-                SettingsApiKey.PasswordChar = '●';
-            };
+            SettingsApiKey.Enter += (s, e) => { SettingsApiKey.PasswordChar = '\0'; };
+            SettingsApiKey.Leave += (s, e) => { SettingsApiKey.PasswordChar = '●'; };
             SettingsApiKey.KeyPress += (s, e) =>
             {
                 char k = e.KeyChar;
@@ -203,7 +200,8 @@ namespace WeatherCS
                     SetRegistry("autorun", "True");
                     using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
                         r.SetValue(About.AssemblyTitle, exPath + " /minimized");
-                } else
+                }
+                else
                 {
                     SetRegistry("autorun", "False");
                     using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
@@ -212,10 +210,11 @@ namespace WeatherCS
             };
             SettingsSaveButton.Click += (s, e) =>
             {
-                SettingsSaveButton.Enabled = false;
+                var b = (s as Button);
+                b.Enabled = false;
                 SetRegistry("api", SettingsApiKey.Text);
                 GetWeather(SettingsLocation.Text);
-                SettingsSaveButton.Enabled = true;
+                b.Enabled = true;
             };
             SettingsRestoreButton.Click += (s, e) =>
             {
@@ -246,10 +245,16 @@ namespace WeatherCS
             };
 
             AboutAppName.Text = appName;
-            AboutAppVer.Text = About.AssemblyVersion;
+            AboutAppVer.Text = $"Версия {About.AssemblyVersion}";
             AboutAppDesc.Text = About.AssemblyDescription;
             openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-off/WeatherCS"); };
             GetAPIButton.Click += (s, e) => { Process.Start("https://openweathermap.org/appid"); };
+            AboutCheckUpdates.Click += (s, e) =>
+            {
+                var b = (s as Button);
+                b.Enabled = false;
+                CheckForUpdates();
+            };
 
             InitializeApp();
         }
@@ -269,6 +274,8 @@ namespace WeatherCS
             {
                 ErrorHandler("Отсутствует интернет соединение");
             }
+
+            CheckForUpdates();
         }
 
         void GetWeather(string newCity = "", string newKey = "")
@@ -326,6 +333,43 @@ namespace WeatherCS
             {
                 ErrorHandler("Ошибка доступа к OpenWeatherMap");
             }
+        }
+
+        void CheckForUpdates()
+        {
+            using (WebClient w = new WebClient())
+            {
+                Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-off/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
+                string[] v1 = m.Groups[1].Value.Split('.');
+                string[] v2 = About.AssemblyVersion.Split('.');
+                string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
+                string u = "https://github.com/crashmax-off/WeatherCS/releases/latest";
+
+                if (r.Length < 3)
+                {
+                    AboutButton.Size = new Size(150, 21);
+                    AboutButton.Text = "Доступна новая версия";
+                    AboutCheckUpdates.Text = "Обновиться до " + m.Groups[1].Value;
+                    AboutCheckUpdates.Click += (s, e) => { Process.Start(u); };
+
+                    if (!isChecked)
+                    {
+                        Tray.BalloonTipTitle = "Доступна новая версия " + m.Groups[1].Value;
+                        Tray.BalloonTipText = "Нажмите, чтобы перейти на GitHub";
+                        Tray.BalloonTipIcon = ToolTipIcon.Info;
+                        Tray.BalloonTipClicked += (s, e) => { Process.Start(u); };
+                        Tray.Visible = true;
+                        Tray.ShowBalloonTip(1000);
+                        isChecked = true;
+                    }
+                }
+                else
+                {
+                    AboutCheckUpdates.Text = "Проверить обновления";
+                }
+            }
+
+            AboutCheckUpdates.Enabled = true;
         }
 
         async void ErrorHandler(string error = "")

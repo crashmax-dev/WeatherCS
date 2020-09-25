@@ -38,7 +38,7 @@ namespace WeatherCS
         {
             get
             {
-                return $"Версия {Assembly.GetExecutingAssembly().GetName().Version.ToString().Substring(0, 5)}";
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString().Substring(0, 5);
             }
         }
     }

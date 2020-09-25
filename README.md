@@ -23,6 +23,7 @@ WeatherCS — Виджет-приложение
 
 Nuget-пакеты / API:
 -------------
+ - [.NET Framework 4.7.2] (https://dotnet.microsoft.com/download/dotnet-framework/net472)
  - [Costura.Fody](https://www.nuget.org/packages/Costura.Fody)
  - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json/)
  - [openweathermap.org](https://openweathermap.org)
