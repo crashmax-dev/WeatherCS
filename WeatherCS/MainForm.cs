@@ -15,12 +15,40 @@ namespace WeatherCS
             get { CreateParams cp = base.CreateParams; cp.ClassStyle = 0x20000; return cp; }
         }
 
+        readonly string appName = About.AssemblyTitle;
+        readonly string exPath = Application.ExecutablePath;
         bool fadeIn = true;
 
         public MainForm()
         {
             InitializeComponent();
 
+            Load += async (s, e) =>
+            {
+                if (GetRegistry("autorun") == null)
+                    SetRegistry("autorun", "True");
+
+                if (GetRegistry("autorun") == "True")
+                {
+                    SettingsAutoRun.Checked = true;
+                    String[] args = Environment.GetCommandLineArgs();
+
+                    if (args.Length > 1)
+                    {
+                        if (args[1] == "/minimized")
+                        {
+                            // костыль ебаный!
+                            await Task.Delay(10);
+                            WindowState = FormWindowState.Minimized;
+                            Hide();
+                        }
+                    }
+                }
+                else
+                {
+                    SettingsAutoRun.Checked = false;
+                }
+            };
             Resize += (s, e) =>
             {
                 if (WindowState == FormWindowState.Minimized)
@@ -89,7 +117,6 @@ namespace WeatherCS
                 if (e.Button == MouseButtons.Left)
                 {
                     Show();
-                    ShowInTaskbar = true;
                     Tray.Visible = false;
                     WindowState = FormWindowState.Normal;
                 }
@@ -166,6 +193,23 @@ namespace WeatherCS
                     e.Handled = true;
                 }
             };
+            SettingsRunPath.Text = exPath;
+            SettingsAutoRun.CheckedChanged += (s, e) =>
+            {
+                bool check = (s as CheckBox).Checked;
+
+                if (check)
+                {
+                    SetRegistry("autorun", "True");
+                    using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+                        r.SetValue(About.AssemblyTitle, exPath + " /minimized");
+                } else
+                {
+                    SetRegistry("autorun", "False");
+                    using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+                        r.DeleteValue(About.AssemblyTitle);
+                }
+            };
             SettingsSaveButton.Click += (s, e) =>
             {
                 SettingsSaveButton.Enabled = false;
@@ -175,14 +219,23 @@ namespace WeatherCS
             };
             SettingsRestoreButton.Click += (s, e) =>
             {
-                using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\WeatherCS"))
+                using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\" + appName))
                 {
                     if (reg != null)
                     {
-                        Registry.CurrentUser.DeleteSubKey(@"Software\WeatherCS");
-                        InitializeApp();
+                        Registry.CurrentUser.DeleteSubKey(@"Software\" + appName);
                     }
                 }
+
+                using (RegistryKey run = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                {
+                    if (run.GetValue(appName) != null)
+                        run.DeleteValue(appName);
+                    SetRegistry("autorun", "True");
+                    SettingsAutoRun.Checked = true;
+                }
+
+                InitializeApp();
             };
 
             ReconnectButton.Click += (s, e) =>
@@ -192,25 +245,13 @@ namespace WeatherCS
                 InitializeApp();
             };
 
-            AboutAppName.Text = About.AssemblyTitle;
+            AboutAppName.Text = appName;
             AboutAppVer.Text = About.AssemblyVersion;
             AboutAppDesc.Text = About.AssemblyDescription;
             openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-off/WeatherCS"); };
             GetAPIButton.Click += (s, e) => { Process.Start("https://openweathermap.org/appid"); };
-            InitializeApp();
-        }
 
-        async void FadeInApp()
-        {
-            if (fadeIn)
-            {
-                for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
-                {
-                    await Task.Delay(10);
-                }
-            }
-            else { Opacity = 0.95; }
-            fadeIn = false;
+            InitializeApp();
         }
 
         void InitializeApp()
@@ -220,7 +261,6 @@ namespace WeatherCS
 
             if (location.Success)
             {
-                AutoRun();
                 RegistryApp("api", API.Key);
                 RegistryApp("location", location.City);
                 GetWeather();
@@ -267,8 +307,9 @@ namespace WeatherCS
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
                 SettingsApiKey.Text = GetRegistry("api");
+                DescriptionPic.Text = FirstLetterToUpper(w.Weather[0].Description);
+                WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w.Weather[0].Icon);
 
-                WeatherStatus(w.Weather);
                 ErrorHandler();
             }
             else if (w.Cod.Equals("404"))
@@ -287,27 +328,13 @@ namespace WeatherCS
             }
         }
 
-        async void WeatherStatus(List<API.Weather> w)
-        {
-            if (w.Count > 0 && WindowState == FormWindowState.Normal)
-            {
-                foreach (var i in w)
-                {
-                    DescriptionPic.Text = FirstLetterToUpper(i.Description);
-                    WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", i.Icon);
-                    await Task.Delay(5000);
-                }
-            }
-
-            DescriptionPic.Text = FirstLetterToUpper(w[0].Description);
-            WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w[0].Icon);
-        }
-
         async void ErrorHandler(string error = "")
         {
+            FadeInApp();
+
             if (error != "")
             {
-                Text = "WeatherCS";
+                Text = appName;
                 // 64 ???
                 Tray.Text = error;
                 TrayWeatherInfo.Text = error;
@@ -320,7 +347,6 @@ namespace WeatherCS
 
                 RegistryApp("api", API.Key);
                 SettingsApiKey.Text = GetRegistry("api");
-                FadeInApp();
             }
             else
             {
@@ -329,53 +355,30 @@ namespace WeatherCS
                 SettingsLocation.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
-                FadeInApp();
                 await Task.Delay(60000);
                 GetWeather();
             }
         }
 
-        void AutoRun()
-        {
-            using (RegistryKey Run = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-            {
-                Run.SetValue("WeatherCS", Application.ExecutablePath + " /minimized");
-
-                String[] args = Environment.GetCommandLineArgs();
-
-                if (args.Length > 1)
-                {
-                    if (args[1] == "/minimized")
-                    {
-                        Hide();
-                        Tray.Visible = true;
-                        ShowInTaskbar = false;
-                        WindowState = FormWindowState.Minimized;
-                    }
-                }
-            }
-        }
-
         void RegistryApp(string key, string value)
         {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName, true))
                 if (reg.GetValue(key) == null) reg.SetValue(key, value);
         }
 
         string GetRegistry(string key)
         {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName))
                 if (reg.GetValue(key) != null)
                     return reg.GetValue(key).ToString();
                 else
-                    return "";
+                    return null;
         }
 
         void SetRegistry(string key, string value)
         {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\WeatherCS"))
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName))
             {
-
                 if (reg.GetValue(key) == null)
                 {
                     reg.SetValue(key, value);
@@ -385,6 +388,19 @@ namespace WeatherCS
                     reg.SetValue(key, value);
                 }
             }
+        }
+
+        async void FadeInApp()
+        {
+            if (fadeIn)
+            {
+                for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
+                {
+                    await Task.Delay(10);
+                }
+            }
+            else { Opacity = 0.95; }
+            fadeIn = false;
         }
 
         string FirstLetterToUpper(string str)

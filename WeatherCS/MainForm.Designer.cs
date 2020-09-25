@@ -47,13 +47,14 @@
             this.LocationInput = new System.Windows.Forms.TextBox();
             this.LocMessage = new System.Windows.Forms.Label();
             this.SettingPanel = new System.Windows.Forms.Panel();
+            this.SettingsAutoRun = new System.Windows.Forms.CheckBox();
+            this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.GetAPIButton = new System.Windows.Forms.Button();
             this.SettingsSaveButton = new System.Windows.Forms.Button();
             this.SettingsRestoreButton = new System.Windows.Forms.Button();
             this.SettingsApiKey = new System.Windows.Forms.TextBox();
             this.ApiKeyLabel = new System.Windows.Forms.Label();
             this.LabelLocationS = new System.Windows.Forms.Label();
-            this.SettingsLocation = new System.Windows.Forms.TextBox();
             this.Main = new System.Windows.Forms.Panel();
             this.DescriptionPic = new System.Windows.Forms.Label();
             this.TitleBar = new System.Windows.Forms.Label();
@@ -71,6 +72,8 @@
             this.MinimizeButton = new System.Windows.Forms.Button();
             this.SettingButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
+            this.SettingsRunPath = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.WeatherIco)).BeginInit();
             this.TrayMenu.SuspendLayout();
             this.SettingPanel.SuspendLayout();
@@ -232,18 +235,46 @@
             // SettingPanel
             // 
             this.SettingPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingPanel.Controls.Add(this.label1);
+            this.SettingPanel.Controls.Add(this.SettingsRunPath);
+            this.SettingPanel.Controls.Add(this.SettingsAutoRun);
+            this.SettingPanel.Controls.Add(this.SettingsLocation);
             this.SettingPanel.Controls.Add(this.GetAPIButton);
             this.SettingPanel.Controls.Add(this.SettingsSaveButton);
             this.SettingPanel.Controls.Add(this.SettingsRestoreButton);
             this.SettingPanel.Controls.Add(this.SettingsApiKey);
             this.SettingPanel.Controls.Add(this.ApiKeyLabel);
             this.SettingPanel.Controls.Add(this.LabelLocationS);
-            this.SettingPanel.Controls.Add(this.SettingsLocation);
             this.SettingPanel.Location = new System.Drawing.Point(0, 21);
             this.SettingPanel.Name = "SettingPanel";
             this.SettingPanel.Size = new System.Drawing.Size(400, 279);
             this.SettingPanel.TabIndex = 24;
             this.SettingPanel.Visible = false;
+            // 
+            // SettingsAutoRun
+            // 
+            this.SettingsAutoRun.AutoSize = true;
+            this.SettingsAutoRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsAutoRun.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.SettingsAutoRun.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsAutoRun.Location = new System.Drawing.Point(105, 151);
+            this.SettingsAutoRun.Name = "SettingsAutoRun";
+            this.SettingsAutoRun.Size = new System.Drawing.Size(191, 17);
+            this.SettingsAutoRun.TabIndex = 8;
+            this.SettingsAutoRun.Text = "Запускать при запуске системы";
+            this.SettingsAutoRun.UseVisualStyleBackColor = true;
+            // 
+            // SettingsLocation
+            // 
+            this.SettingsLocation.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsLocation.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsLocation.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F);
+            this.SettingsLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsLocation.Location = new System.Drawing.Point(15, 28);
+            this.SettingsLocation.MaxLength = 30;
+            this.SettingsLocation.Name = "SettingsLocation";
+            this.SettingsLocation.Size = new System.Drawing.Size(370, 23);
+            this.SettingsLocation.TabIndex = 0;
             // 
             // GetAPIButton
             // 
@@ -253,7 +284,7 @@
             this.GetAPIButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GetAPIButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GetAPIButton.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.GetAPIButton.Location = new System.Drawing.Point(322, 75);
+            this.GetAPIButton.Location = new System.Drawing.Point(317, 75);
             this.GetAPIButton.Name = "GetAPIButton";
             this.GetAPIButton.Size = new System.Drawing.Size(68, 23);
             this.GetAPIButton.TabIndex = 7;
@@ -303,16 +334,17 @@
             this.SettingsApiKey.MaxLength = 32;
             this.SettingsApiKey.Name = "SettingsApiKey";
             this.SettingsApiKey.PasswordChar = '●';
-            this.SettingsApiKey.Size = new System.Drawing.Size(373, 23);
+            this.SettingsApiKey.Size = new System.Drawing.Size(291, 23);
             this.SettingsApiKey.TabIndex = 3;
             // 
             // ApiKeyLabel
             // 
+            this.ApiKeyLabel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ApiKeyLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.ApiKeyLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ApiKeyLabel.Location = new System.Drawing.Point(12, 59);
+            this.ApiKeyLabel.Location = new System.Drawing.Point(11, 59);
             this.ApiKeyLabel.Name = "ApiKeyLabel";
-            this.ApiKeyLabel.Size = new System.Drawing.Size(379, 19);
+            this.ApiKeyLabel.Size = new System.Drawing.Size(376, 19);
             this.ApiKeyLabel.TabIndex = 2;
             this.ApiKeyLabel.Text = "API Ключ:";
             // 
@@ -320,23 +352,11 @@
             // 
             this.LabelLocationS.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.LabelLocationS.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.LabelLocationS.Location = new System.Drawing.Point(12, 12);
+            this.LabelLocationS.Location = new System.Drawing.Point(11, 12);
             this.LabelLocationS.Name = "LabelLocationS";
             this.LabelLocationS.Size = new System.Drawing.Size(379, 19);
             this.LabelLocationS.TabIndex = 1;
             this.LabelLocationS.Text = "Город, страна или регион:";
-            // 
-            // SettingsLocation
-            // 
-            this.SettingsLocation.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.SettingsLocation.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.SettingsLocation.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F);
-            this.SettingsLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SettingsLocation.Location = new System.Drawing.Point(15, 28);
-            this.SettingsLocation.MaxLength = 30;
-            this.SettingsLocation.Name = "SettingsLocation";
-            this.SettingsLocation.Size = new System.Drawing.Size(375, 23);
-            this.SettingsLocation.TabIndex = 0;
             // 
             // Main
             // 
@@ -551,6 +571,29 @@
             this.AboutButton.TabStop = false;
             this.AboutButton.UseVisualStyleBackColor = false;
             // 
+            // SettingsRunPath
+            // 
+            this.SettingsRunPath.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SettingsRunPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SettingsRunPath.Font = new System.Drawing.Font("Segoe UI Semibold", 10.75F);
+            this.SettingsRunPath.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.SettingsRunPath.Location = new System.Drawing.Point(14, 122);
+            this.SettingsRunPath.MaxLength = 30;
+            this.SettingsRunPath.Name = "SettingsRunPath";
+            this.SettingsRunPath.ReadOnly = true;
+            this.SettingsRunPath.Size = new System.Drawing.Size(371, 20);
+            this.SettingsRunPath.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label1.Location = new System.Drawing.Point(11, 103);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(376, 19);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Автозагрузка:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -635,5 +678,8 @@
         private System.Windows.Forms.Button SettingsSaveButton;
         private System.Windows.Forms.Label AboutAppVer;
         private System.Windows.Forms.Button GetAPIButton;
+        private System.Windows.Forms.CheckBox SettingsAutoRun;
+        private System.Windows.Forms.TextBox SettingsRunPath;
+        private System.Windows.Forms.Label label1;
     }
 }
