@@ -21,11 +21,11 @@ namespace WeatherCS
         readonly string exPath = Application.ExecutablePath;
         bool fadeIn = true;
         bool isChecked = false;
+        bool isEntered = false;
 
         public MainForm()
         {
             InitializeComponent();
-
             Load += async (s, e) =>
             {
                 if (GetRegistry("autorun") == null)
@@ -67,7 +67,6 @@ namespace WeatherCS
                 if (e.KeyCode == Keys.Escape && !SettingPanel.Visible)
                 {
                     LocMessage.ForeColor = SystemColors.ControlDarkDark;
-                    LocMessage.Text = "Нажмите Enter, чтобы сохранить.";
                     e.SuppressKeyPress = true;
                     LocationInput.Text = GetRegistry("location");
                     LocationInput.SelectAll();
@@ -149,6 +148,7 @@ namespace WeatherCS
             };
             TrayCloseButton.Click += (s, e) => { Close(); };
 
+            LocationInput.Enter += (s, e) => { isEntered = true; LocMessage.Text = "Нажмите Enter, чтобы сохранить."; };
             LocationInput.KeyDown += (s, e) => { UpdateLocation(s, e); };
             LocationInput.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
             LocationInput.TextChanged += (s, e) =>
@@ -208,10 +208,25 @@ namespace WeatherCS
                         r.DeleteValue(About.AssemblyTitle);
                 }
             };
+            SettingsInterval.KeyPress += (s, e) =>
+            {
+                char k = e.KeyChar;
+                if (!char.IsControl(k) && !char.IsNumber(k))
+                    e.Handled = true;
+            };
             SettingsSaveButton.Click += (s, e) =>
             {
                 var b = (s as Button);
                 b.Enabled = false;
+                if(SettingsInterval.Text != "0")
+                {
+                    SetRegistry("interval", SettingsInterval.Text);
+                    Timer.Interval = Convert.ToInt32(SettingsInterval.Text) * 60000;
+                    SettingsInterval.ForeColor = SystemColors.ControlDarkDark;
+                } else
+                {
+                    SettingsInterval.ForeColor = Color.Firebrick;
+                }
                 SetRegistry("api", SettingsApiKey.Text);
                 GetWeather(SettingsLocation.Text);
                 b.Enabled = true;
@@ -261,13 +276,18 @@ namespace WeatherCS
 
         void InitializeApp()
         {
-            string ipwhois = "https://ipwhois.app/json/?objects=success,city&lang=ru";
-            var location = API.GetJSON<API.Geo>(ipwhois);
+            var location = API.GetJSON<API.Geo>("https://ipwhois.app/json/?objects=success,city&lang=ru");
 
             if (location.Success)
             {
                 RegistryApp("api", API.Key);
                 RegistryApp("location", location.City);
+                RegistryApp("interval", "10");
+
+                SettingsApiKey.Text = GetRegistry("api");
+                SettingsInterval.Text = GetRegistry("interval");
+                Timer.Interval = Convert.ToInt32(SettingsInterval.Text) * 60000;
+
                 GetWeather();
             }
             else
@@ -283,11 +303,11 @@ namespace WeatherCS
             string key = newKey != "" ? newKey : GetRegistry("api");
             string query = newCity != "" ? newCity : GetRegistry("location");
 
-            string openweathermap = $"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}";
-            var w = API.GetJSON<API.Root>(openweathermap);
+            var w = API.GetJSON<API.Root>($"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}");
 
             if (w.Cod.Equals("200"))
             {
+                isEntered = false;
                 SetRegistry("api", key);
                 SetRegistry("location", query);
 
@@ -313,7 +333,6 @@ namespace WeatherCS
                 PressureLabel.Text = pressure;
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
-                SettingsApiKey.Text = GetRegistry("api");
                 DescriptionPic.Text = FirstLetterToUpper(w.Weather[0].Description);
                 WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w.Weather[0].Icon);
 
@@ -335,6 +354,14 @@ namespace WeatherCS
             }
         }
 
+        void Schedule(object sender, EventArgs e)
+        {
+            if(!isEntered || !SettingPanel.Visible)
+            {
+                GetWeather();
+            }
+        }
+
         void CheckForUpdates()
         {
             using (WebClient w = new WebClient())
@@ -342,7 +369,7 @@ namespace WeatherCS
                 Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-off/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
                 string[] v1 = m.Groups[1].Value.Split('.');
                 string[] v2 = About.AssemblyVersion.Split('.');
-                string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
+                string[] r = v2.Where(x => v1.Any(y => y.Equals(x))).ToArray();
                 string u = "https://github.com/crashmax-off/WeatherCS/releases/latest";
 
                 if (r.Length < 3)
@@ -372,7 +399,7 @@ namespace WeatherCS
             AboutCheckUpdates.Enabled = true;
         }
 
-        async void ErrorHandler(string error = "")
+        void ErrorHandler(string error = "")
         {
             FadeInApp();
 
@@ -399,8 +426,6 @@ namespace WeatherCS
                 SettingsLocation.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
-                await Task.Delay(60000);
-                GetWeather();
             }
         }
 

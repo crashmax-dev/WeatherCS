@@ -13,12 +13,6 @@ namespace WeatherCS
         // https://openweathermap.org/api
         public static string Key = "4b7f29a8e15af3ec8d463f83ce5dd419";
 
-        public class Git
-        {
-            public string Html_Url { get; set; }
-            public string Tag_Name { get; set; }
-        }
-
         public class Geo
         {
             public bool Success { get; set; }
