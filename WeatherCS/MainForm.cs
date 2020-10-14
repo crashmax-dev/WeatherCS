@@ -19,13 +19,13 @@ namespace WeatherCS
 
         readonly string appName = About.AssemblyTitle;
         readonly string exPath = Application.ExecutablePath;
-        bool fadeIn = true;
         bool isChecked = false;
         bool isEntered = false;
 
         public MainForm()
         {
             InitializeComponent();
+
             Load += async (s, e) =>
             {
                 if (GetRegistry("autorun") == null)
@@ -121,6 +121,7 @@ namespace WeatherCS
                     Show();
                     Tray.Visible = false;
                     WindowState = FormWindowState.Normal;
+                    FadeInApp();
                 }
             };
             TrayAboutButton.Click += (s, e) =>
@@ -128,6 +129,7 @@ namespace WeatherCS
                 Show();
                 Tray.Visible = false;
                 WindowState = FormWindowState.Normal;
+                FadeInApp();
 
                 if (!AboutPanel.Visible)
                 {
@@ -140,6 +142,8 @@ namespace WeatherCS
                 Show();
                 Tray.Visible = false;
                 WindowState = FormWindowState.Normal;
+                FadeInApp();
+
                 if (!SettingPanel.Visible)
                 {
                     SettingButton.Focus();
@@ -149,7 +153,14 @@ namespace WeatherCS
             TrayCloseButton.Click += (s, e) => { Close(); };
 
             LocationInput.Enter += (s, e) => { isEntered = true; LocMessage.Text = "Нажмите Enter, чтобы сохранить."; };
-            LocationInput.KeyDown += (s, e) => { UpdateLocation(s, e); };
+            LocationInput.KeyDown += (s, e) => {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    ActiveControl = null;
+                    e.SuppressKeyPress = true;
+                    GetWeather((s as TextBox).Text);
+                }
+            };
             LocationInput.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
             LocationInput.TextChanged += (s, e) =>
             {
@@ -199,13 +210,13 @@ namespace WeatherCS
                 {
                     SetRegistry("autorun", "True");
                     using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-                        r.SetValue(About.AssemblyTitle, exPath + " /minimized");
+                        r.SetValue(appName, exPath + " /minimized");
                 }
                 else
                 {
                     SetRegistry("autorun", "False");
                     using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-                        r.DeleteValue(About.AssemblyTitle);
+                        r.DeleteValue(appName);
                 }
             };
             SettingsInterval.KeyPress += (s, e) =>
@@ -289,6 +300,7 @@ namespace WeatherCS
                 Timer.Interval = Convert.ToInt32(SettingsInterval.Text) * 60000;
 
                 GetWeather();
+                FadeInApp();
             }
             else
             {
@@ -333,7 +345,7 @@ namespace WeatherCS
                 PressureLabel.Text = pressure;
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
-                DescriptionPic.Text = FirstLetterToUpper(w.Weather[0].Description);
+                DescriptionPic.Text = Char.ToUpper(w.Weather[0].Description[0]) + w.Weather[0].Description.Substring(1);
                 WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w.Weather[0].Icon);
 
                 ErrorHandler();
@@ -369,7 +381,7 @@ namespace WeatherCS
                 Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-off/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
                 string[] v1 = m.Groups[1].Value.Split('.');
                 string[] v2 = About.AssemblyVersion.Split('.');
-                string[] r = v2.Where(x => v1.Any(y => y.Equals(x))).ToArray();
+                string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
                 string u = "https://github.com/crashmax-off/WeatherCS/releases/latest";
 
                 if (r.Length < 3)
@@ -401,8 +413,6 @@ namespace WeatherCS
 
         void ErrorHandler(string error = "")
         {
-            FadeInApp();
-
             if (error != "")
             {
                 Text = appName;
@@ -414,7 +424,7 @@ namespace WeatherCS
                 ReconnectButton.Text = "Обновить";
                 ReconnectButton.Enabled = true;
                 DescriptionErrorLabel.Text = error;
-                SettingsLocation.Text = error;
+                SettingsApiKey.ForeColor = Color.Firebrick;
 
                 RegistryApp("api", API.Key);
                 SettingsApiKey.Text = GetRegistry("api");
@@ -424,6 +434,7 @@ namespace WeatherCS
                 ErrorPanel.Visible = false;
 
                 SettingsLocation.ForeColor = SystemColors.ControlDarkDark;
+                SettingsApiKey.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.ForeColor = SystemColors.ControlDarkDark;
                 LocMessage.Text = $"Обновлено в {DateTime.Now:HH:mm}";
             }
@@ -461,29 +472,9 @@ namespace WeatherCS
 
         async void FadeInApp()
         {
-            if (fadeIn)
+            for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
             {
-                for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
-                {
-                    await Task.Delay(10);
-                }
-            }
-            else { Opacity = 0.95; }
-            fadeIn = false;
-        }
-
-        string FirstLetterToUpper(string str)
-        {
-            return Char.ToUpper(str[0]) + str.Substring(1);
-        }
-
-        void UpdateLocation(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                ActiveControl = null;
-                e.SuppressKeyPress = true;
-                GetWeather((sender as TextBox).Text);
+                await Task.Delay(10);
             }
         }
 
