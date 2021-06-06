@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WeatherCS")]
 [assembly: AssemblyDescription("Небольшая виджет-программа для просмотра состояния текущей погоды.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("crashmax-off")]
+[assembly: AssemblyCompany("crashmax-dev")]
 [assembly: AssemblyProduct("WeatherCS")]
 [assembly: AssemblyCopyright("Copyright © CrashMax")]
 [assembly: AssemblyTrademark("")]

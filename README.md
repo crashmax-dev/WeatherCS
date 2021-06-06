@@ -1,9 +1,9 @@
 WeatherCS — Виджет-приложение
 =============================
 
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/crashmax-off/weathercs?color=blue&label=Download%20for%20Windows&logo=windows)](https://github.com/crashmax-off/WeatherCS/releases/latest)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/crashmax-dev/weathercs?color=blue&label=Download%20for%20Windows&logo=windows)](https://github.com/crashmax-dev/WeatherCS/releases/latest)
 ![Language](https://img.shields.io/badge/Language-RU-green)
-![GitHub](https://img.shields.io/github/license/crashmax-off/WeatherCS?label=License)
+![GitHub](https://img.shields.io/github/license/crashmax-dev/WeatherCS?label=License)
 
 Возможности:
 ------------

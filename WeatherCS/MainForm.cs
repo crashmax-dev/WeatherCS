@@ -273,7 +273,7 @@ namespace WeatherCS
             AboutAppName.Text = appName;
             AboutAppVer.Text = $"Версия {About.AssemblyVersion}";
             AboutAppDesc.Text = About.AssemblyDescription;
-            openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-off/WeatherCS"); };
+            openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-dev/WeatherCS"); };
             GetAPIButton.Click += (s, e) => { Process.Start("https://openweathermap.org/appid"); };
             AboutCheckUpdates.Click += (s, e) =>
             {
@@ -378,11 +378,11 @@ namespace WeatherCS
         {
             using (WebClient w = new WebClient())
             {
-                Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-off/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
+                Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-dev/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
                 string[] v1 = m.Groups[1].Value.Split('.');
                 string[] v2 = About.AssemblyVersion.Split('.');
                 string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
-                string u = "https://github.com/crashmax-off/WeatherCS/releases/latest";
+                string u = "https://github.com/crashmax-dev/WeatherCS/releases/latest";
 
                 if (r.Length < 3)
                 {
