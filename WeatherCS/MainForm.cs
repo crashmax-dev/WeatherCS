@@ -209,7 +209,7 @@ namespace WeatherCS
                 if (check)
                 {
                     SetRegistry("autorun", "True");
-                    using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+                    using (RegistryKey r = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
                         r.SetValue(appName, exPath + " /minimized");
                 }
                 else
