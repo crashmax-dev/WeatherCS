@@ -209,7 +209,7 @@ namespace WeatherCS
                 if (check)
                 {
                     SetRegistry("autorun", "True");
-                    using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+                    using (RegistryKey r = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
                         r.SetValue(appName, exPath + " /minimized");
                 }
                 else
@@ -346,7 +346,8 @@ namespace WeatherCS
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
                 DescriptionPic.Text = Char.ToUpper(w.Weather[0].Description[0]) + w.Weather[0].Description.Substring(1);
-                WeatherIco.ImageLocation = String.Format("https://openweathermap.org/img/wn/{0}@4x.png", w.Weather[0].Icon);
+                // FIXME: use weather icons
+                WeatherIco.ImageLocation = "https://cdn.7tv.app/emote/01H6XFTQAG000946Z575117ZG6/4x.png";
 
                 ErrorHandler();
             }
