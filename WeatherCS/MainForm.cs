@@ -5,8 +5,6 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 namespace WeatherCS
 {
@@ -17,8 +15,9 @@ namespace WeatherCS
             get { CreateParams cp = base.CreateParams; cp.ClassStyle = 0x20000; return cp; }
         }
 
-        readonly string appName = About.AssemblyTitle;
-        readonly string exPath = Application.ExecutablePath;
+        public static readonly string APP_NAME = About.AssemblyTitle;
+        public static readonly string EXECUTABLE_PATH = Application.ExecutablePath;
+
         bool isChecked = false;
         bool isEntered = false;
 
@@ -28,10 +27,10 @@ namespace WeatherCS
 
             Load += async (s, e) =>
             {
-                if (GetRegistry("autorun") == null)
-                    SetRegistry("autorun", "True");
+                if (Registry.GetRegistry("autorun") == null)
+                    Registry.SetRegistry("autorun", "True");
 
-                if (GetRegistry("autorun") == "True")
+                if (Registry.GetRegistry("autorun") == "True")
                 {
                     SettingsAutoRun.Checked = true;
                     String[] args = Environment.GetCommandLineArgs();
@@ -68,7 +67,7 @@ namespace WeatherCS
                 {
                     LocMessage.ForeColor = SystemColors.ControlDarkDark;
                     e.SuppressKeyPress = true;
-                    LocationInput.Text = GetRegistry("location");
+                    LocationInput.Text = Registry.GetRegistry("location");
                     LocationInput.SelectAll();
                     LocationInput.Focus();
                 }
@@ -153,7 +152,8 @@ namespace WeatherCS
             TrayCloseButton.Click += (s, e) => { Close(); };
 
             LocationInput.Enter += (s, e) => { isEntered = true; LocMessage.Text = "Нажмите Enter, чтобы сохранить."; };
-            LocationInput.KeyDown += (s, e) => {
+            LocationInput.KeyDown += (s, e) =>
+            {
                 if (e.KeyCode == Keys.Enter)
                 {
                     ActiveControl = null;
@@ -161,7 +161,7 @@ namespace WeatherCS
                     GetWeather((s as TextBox).Text);
                 }
             };
-            LocationInput.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
+            LocationInput.KeyPress += (s, e) => { Helpers.RegExpLocationInput(s, e); };
             LocationInput.TextChanged += (s, e) =>
             {
                 int i = LocationInput.TextLength;
@@ -188,7 +188,7 @@ namespace WeatherCS
                 }
             };
 
-            SettingsLocation.KeyPress += (s, e) => { RegExpLocationInput(s, e); };
+            SettingsLocation.KeyPress += (s, e) => { Helpers.RegExpLocationInput(s, e); };
             SettingsApiKey.Enter += (s, e) => { SettingsApiKey.PasswordChar = '\0'; };
             SettingsApiKey.Leave += (s, e) => { SettingsApiKey.PasswordChar = '●'; };
             SettingsApiKey.KeyPress += (s, e) =>
@@ -201,23 +201,12 @@ namespace WeatherCS
                     e.Handled = true;
                 }
             };
-            SettingsRunPath.Text = exPath;
+            SettingsRunPath.Text = EXECUTABLE_PATH;
             SettingsAutoRun.CheckedChanged += (s, e) =>
             {
                 bool check = (s as CheckBox).Checked;
-
-                if (check)
-                {
-                    SetRegistry("autorun", "True");
-                    using (RegistryKey r = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-                        r.SetValue(appName, exPath + " /minimized");
-                }
-                else
-                {
-                    SetRegistry("autorun", "False");
-                    using (RegistryKey r = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-                        r.DeleteValue(appName);
-                }
+                if (check) Registry.RegistryEnableAutorun();
+                else Registry.RegistryDisableAutorun();
             };
             SettingsInterval.KeyPress += (s, e) =>
             {
@@ -229,37 +218,24 @@ namespace WeatherCS
             {
                 var b = (s as Button);
                 b.Enabled = false;
-                if(SettingsInterval.Text != "0")
+                if (SettingsInterval.Text != "0")
                 {
-                    SetRegistry("interval", SettingsInterval.Text);
+                    Registry.SetRegistry("interval", SettingsInterval.Text);
                     Timer.Interval = Convert.ToInt32(SettingsInterval.Text) * 60000;
                     SettingsInterval.ForeColor = SystemColors.ControlDarkDark;
-                } else
+                }
+                else
                 {
                     SettingsInterval.ForeColor = Color.Firebrick;
                 }
-                SetRegistry("api", SettingsApiKey.Text);
+                Registry.SetRegistry("api", SettingsApiKey.Text);
                 GetWeather(SettingsLocation.Text);
                 b.Enabled = true;
             };
             SettingsRestoreButton.Click += (s, e) =>
             {
-                using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\" + appName))
-                {
-                    if (reg != null)
-                    {
-                        Registry.CurrentUser.DeleteSubKey(@"Software\" + appName);
-                    }
-                }
-
-                using (RegistryKey run = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
-                {
-                    if (run.GetValue(appName) != null)
-                        run.DeleteValue(appName);
-                    SetRegistry("autorun", "True");
-                    SettingsAutoRun.Checked = true;
-                }
-
+                Registry.RestoreRegistry();
+                SettingsAutoRun.Checked = true;
                 InitializeApp();
             };
 
@@ -270,33 +246,33 @@ namespace WeatherCS
                 InitializeApp();
             };
 
-            AboutAppName.Text = appName;
+            AboutAppName.Text = APP_NAME;
             AboutAppVer.Text = $"Версия {About.AssemblyVersion}";
             AboutAppDesc.Text = About.AssemblyDescription;
             openGitHub.Click += (s, e) => { Process.Start("https://github.com/crashmax-dev/WeatherCS"); };
             GetAPIButton.Click += (s, e) => { Process.Start("https://openweathermap.org/appid"); };
-            AboutCheckUpdates.Click += (s, e) =>
+            AboutCheckUpdates.Click += async (s, e) =>
             {
                 var b = (s as Button);
                 b.Enabled = false;
-                CheckForUpdates();
+                await CheckForUpdates();
             };
 
             InitializeApp();
         }
 
-        void InitializeApp()
+        async void InitializeApp()
         {
-            var location = API.GetJSON<API.Geo>("https://ipwhois.app/json/?objects=success,city&lang=ru");
+            var location = await API.GetJSON<API.Geo>("https://ipwhois.app/json/?objects=success,city&lang=ru");
 
             if (location.Success)
             {
-                RegistryApp("api", API.Key);
-                RegistryApp("location", location.City);
-                RegistryApp("interval", "10");
+                Registry.SetRegistry("api", API.Key);
+                Registry.SetRegistry("location", location.City);
+                Registry.SetRegistry("interval", "10");
 
-                SettingsApiKey.Text = GetRegistry("api");
-                SettingsInterval.Text = GetRegistry("interval");
+                SettingsApiKey.Text = Registry.GetRegistry("api");
+                SettingsInterval.Text = Registry.GetRegistry("interval");
                 Timer.Interval = Convert.ToInt32(SettingsInterval.Text) * 60000;
 
                 GetWeather();
@@ -307,21 +283,21 @@ namespace WeatherCS
                 ErrorHandler("Отсутствует интернет соединение");
             }
 
-            CheckForUpdates();
+            await CheckForUpdates();
         }
 
-        void GetWeather(string newCity = "", string newKey = "")
+        async void GetWeather(string newCity = "", string newKey = "")
         {
-            string key = newKey != "" ? newKey : GetRegistry("api");
-            string query = newCity != "" ? newCity : GetRegistry("location");
+            string key = newKey != "" ? newKey : Registry.GetRegistry("api");
+            string query = newCity != "" ? newCity : Registry.GetRegistry("location");
 
-            var w = API.GetJSON<API.Root>($"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}");
+            var w = await API.GetJSON<API.Root>($"https://api.openweathermap.org/data/2.5/weather?lang=ru&units=metric&q={query}&appid={key}");
 
             if (w.Cod.Equals("200"))
             {
                 isEntered = false;
-                SetRegistry("api", key);
-                SetRegistry("location", query);
+                Registry.SetRegistry("api", key);
+                Registry.SetRegistry("location", query);
 
                 string temp = $"{Math.Round(w.Main.Temp, 1)}°C";
                 string clouds = $"Облачность: {w.Clouds.All}%";
@@ -332,7 +308,7 @@ namespace WeatherCS
                 string pressure = $"Давление: {Math.Round(w.Main.Pressure * 0.75, 1)}mmHg";
 
                 string loc = w.Name;
-                string title = $"{loc} — {temp}";
+                string title = $"{loc} ({temp})";
 
                 // labels
                 Text = title;
@@ -346,8 +322,12 @@ namespace WeatherCS
                 LocationInput.Text = loc;
                 SettingsLocation.Text = loc;
                 DescriptionPic.Text = Char.ToUpper(w.Weather[0].Description[0]) + w.Weather[0].Description.Substring(1);
-                // FIXME: use weather icons
-                WeatherIco.ImageLocation = "https://cdn.7tv.app/emote/01H6XFTQAG000946Z575117ZG6/4x.png";
+
+                object iconImage = Properties.Resources.ResourceManager.GetObject(w.Weather[0].Icon);
+                if (iconImage is Image image)
+                {
+                    WeatherIco.Image = Helpers.AdjustImageContrast(image, 1.5f);
+                }
 
                 ErrorHandler();
             }
@@ -375,40 +355,42 @@ namespace WeatherCS
             }
         }
 
-        void CheckForUpdates()
+        async Task CheckForUpdates()
         {
             using (WebClient w = new WebClient())
             {
-                Match m = Regex.Match(w.DownloadString("https://raw.githubusercontent.com/crashmax-dev/WeatherCS/master/WeatherCS/Properties/AssemblyInfo.cs"), @"\[assembly\: AssemblyVersion\(""(\d+\.\d+\.\d+)""\)\]");
-                string[] v1 = m.Groups[1].Value.Split('.');
-                string[] v2 = About.AssemblyVersion.Split('.');
-                string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
-                string u = "https://github.com/crashmax-dev/WeatherCS/releases/latest";
-
-                if (r.Length < 3)
+                var release = await API.GetJSON<API.Release>("https://api.github.com/repos/crashmax-dev/WeatherCS/releases/latest");
+                if (release.Tag_Name != null)
                 {
-                    AboutButton.Size = new Size(150, 21);
-                    AboutButton.Text = "Доступна новая версия";
-                    AboutCheckUpdates.Text = "Обновиться до " + m.Groups[1].Value;
-                    AboutCheckUpdates.Click += (s, e) => { Process.Start(u); };
+                    string[] v1 = release.Tag_Name.Split('.');
+                    string[] v2 = About.AssemblyVersion.Split('.');
+                    string[] r = v1.Where(x => v2.Any(y => y.Equals(x))).ToArray();
+                    string u = "https://github.com/crashmax-dev/WeatherCS/releases/latest";
 
-                    if (!isChecked)
+                    if (r.Length < 3)
                     {
-                        Tray.BalloonTipTitle = "Доступна новая версия " + m.Groups[1].Value;
-                        Tray.BalloonTipText = "Нажмите, чтобы перейти на GitHub";
-                        Tray.BalloonTipIcon = ToolTipIcon.Info;
-                        Tray.BalloonTipClicked += (s, e) => { Process.Start(u); };
-                        Tray.Visible = true;
-                        Tray.ShowBalloonTip(1000);
-                        isChecked = true;
+                        AboutButton.Size = new Size(150, 21);
+                        AboutButton.Text = "Доступна новая версия";
+                        AboutCheckUpdates.Text = "Обновиться до " + release.Tag_Name;
+                        AboutCheckUpdates.Click += (s, e) => { Process.Start(u); };
+
+                        if (!isChecked)
+                        {
+                            Tray.BalloonTipTitle = "Доступна новая версия " + release.Tag_Name;
+                            Tray.BalloonTipText = "Нажмите, чтобы перейти на GitHub";
+                            Tray.BalloonTipIcon = ToolTipIcon.Info;
+                            Tray.BalloonTipClicked += (s, e) => { Process.Start(u); };
+                            Tray.Visible = true;
+                            Tray.ShowBalloonTip(1000);
+                            isChecked = true;
+                        }
+
+                        return;
                     }
-                }
-                else
-                {
-                    AboutCheckUpdates.Text = "Проверить обновления";
                 }
             }
 
+            AboutCheckUpdates.Text = "Проверить обновления";
             AboutCheckUpdates.Enabled = true;
         }
 
@@ -416,7 +398,7 @@ namespace WeatherCS
         {
             if (error != "")
             {
-                Text = appName;
+                Text = APP_NAME;
                 // 64 ???
                 Tray.Text = error;
                 TrayWeatherInfo.Text = error;
@@ -427,8 +409,8 @@ namespace WeatherCS
                 DescriptionErrorLabel.Text = error;
                 SettingsApiKey.ForeColor = Color.Firebrick;
 
-                RegistryApp("api", API.Key);
-                SettingsApiKey.Text = GetRegistry("api");
+                Registry.SetRegistry("api", API.Key);
+                SettingsApiKey.Text = API.Key;
             }
             else
             {
@@ -441,51 +423,11 @@ namespace WeatherCS
             }
         }
 
-        void RegistryApp(string key, string value)
-        {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName, true))
-                if (reg.GetValue(key) == null) reg.SetValue(key, value);
-        }
-
-        string GetRegistry(string key)
-        {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName))
-                if (reg.GetValue(key) != null)
-                    return reg.GetValue(key).ToString();
-                else
-                    return null;
-        }
-
-        void SetRegistry(string key, string value)
-        {
-            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\" + appName))
-            {
-                if (reg.GetValue(key) == null)
-                {
-                    reg.SetValue(key, value);
-                }
-                else if (reg.GetValue(key).ToString() != value)
-                {
-                    reg.SetValue(key, value);
-                }
-            }
-        }
-
         async void FadeInApp()
         {
             for (Opacity = 0; Opacity < 0.95; Opacity += 0.05)
             {
                 await Task.Delay(10);
-            }
-        }
-
-        void RegExpLocationInput(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) &&
-                !char.IsLetter(e.KeyChar) &&
-                (e.KeyChar != ' ' && e.KeyChar != '-'))
-            {
-                e.Handled = true;
             }
         }
     }

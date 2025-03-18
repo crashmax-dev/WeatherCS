@@ -1,17 +1,20 @@
-﻿using System.IO;
-using System.Net;
-using System.Text;
-// Install-Package Newtonsoft.Json
-using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace WeatherCS
 {
     public static class API
     {
-        // https://openweathermap.org/api
         public static string Key = "4b7f29a8e15af3ec8d463f83ce5dd419";
+
+        public class Release
+        {
+            public string Tag_Name { get; set; }
+        }
 
         public class Geo
         {
@@ -54,40 +57,35 @@ namespace WeatherCS
 
         public static bool CheckInternet()
         {
-            if (NetworkInterface.GetIsNetworkAvailable() &&
-                        new Ping().Send(new IPAddress(new byte[] { 8, 8, 8, 8 }), 2000).Status == IPStatus.Success)
-                return true;
-            else
-                return false;
+            return NetworkInterface.GetIsNetworkAvailable();
         }
 
-        public static T GetJSON<T>(string url) where T : new()
+        public static async Task<T> GetJSON<T>(string url) where T : new()
         {
-            using (var w = new WebClient())
+            using (var client = new HttpClient())
             {
-                w.Encoding = Encoding.UTF8;
-                var json_data = string.Empty;
+                client.DefaultRequestHeaders.Add("User-Agent", "WeatherCS API Client");
 
-                try
+                var response = await client.GetAsync(url);
+                if (response == null) return new T();
+                if (!response.IsSuccessStatusCode)
                 {
-                    json_data = w.DownloadString(url);
-                }
-                catch (WebException ex)
-                {
-                    if (CheckInternet())
-                    {
-                        using (StreamReader r = new StreamReader(ex.Response.GetResponseStream()))
-                        {
-                            json_data = r.ReadToEnd();
-                        }
-                    }
-                    else
-                    {
-                        return JsonConvert.DeserializeObject<T>("{\"cod\": 0}");
-                    }
+                    string error = $"Ошибка API: {response.StatusCode}";
+                    Console.WriteLine(error);
+                    return new T();
                 }
 
-                return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
+                string json = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    string error = "Пустой ответ от API";
+                    Console.WriteLine(error);
+                    return new T();
+                }
+
+                Console.WriteLine("JSON от API:\n" + json);
+                return JsonConvert.DeserializeObject<T>(json);
             }
         }
     }
